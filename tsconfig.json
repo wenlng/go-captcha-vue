@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "es2020",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "exclude": ["node_modules"],
+    "useDefineForClassFields": true,
+    "allowImportingTsExtensions": true,
+    "jsx": "preserve",
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "importHelpers": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "resolveJsonModule": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": ["./packages/*"]
+    },
+    "lib": ["es2020", "esnext", "dom", "dom.iterable", "scripthost"],
+
+    "declaration": true,
+  },
+  "include": ["env.d.ts", "packages/**/*.ts", "packages/**/*.d.ts", "packages/**/*.tsx", "packages/**/*.vue"],
+  "exclude": [
+    "node_modules"
+  ]
+}
