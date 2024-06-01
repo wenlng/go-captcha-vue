@@ -814,7 +814,7 @@ var staticRenderFns$6 = [function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("div", { staticClass: "header" }, [_c("span", [_vm._v("\u8BF7\u62D6\u52A8\u6ED1\u5757\u5B8C\u6210\u62FC\u56FE")])]);
+  return _c("div", { staticClass: "header header2" }, [_c("span", [_vm._v("\u8BF7\u62D6\u52A8\u6ED1\u5757\u5B8C\u6210\u62FC\u56FE")])]);
 }];
 var index_vue_vue_type_style_index_0_scoped_true_lang$2 = "";
 const __cssModules$6 = {};
@@ -824,7 +824,7 @@ var __component__$6 = /* @__PURE__ */ normalizeComponent(
   staticRenderFns$6,
   false,
   __vue2_injectStyles$6,
-  "ae8e1660",
+  "252abb4d",
   null,
   null
 );

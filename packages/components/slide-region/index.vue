@@ -3,7 +3,7 @@
       :class="`wrapper ${config.showTheme && 'theme'}`"
       :style="wrapperStyles"
   >
-    <div class="header">
+    <div class="header header2">
       <span>请拖动滑块完成拼图</span>
     </div>
     <div class="body" ref="containerRef">
@@ -94,6 +94,9 @@ const imageStyles = computed(() => {
 <style lang="less" scoped>
 @import "../../gocaptcha";
 
+.header2{
+  text-align: center;
+}
 .tile{
   position: absolute;
   z-index: 30;
