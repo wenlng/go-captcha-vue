@@ -4,6 +4,23 @@
   "private": false,
   "type": "module",
   "license": "MIT",
+  "description": "This is the vue package for go-captcha",
+  "keywords": [
+    "go-captcha-vue",
+    "go-captcha",
+    "gocaptcha",
+    "captcha-vue",
+    "vue-captcha",
+    "capts",
+    "gocapts"
+  ],
+  "bugs": {
+    "url": "https://github.com/wenlng/go-captcha-vue/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wenlng/go-captcha-vue.git"
+  },
   "main": "dist/go-captcha-vue.umd.js",
   "module": "dist/go-captcha-vue.es.js",
   "types": "./dist/index.d.ts",
