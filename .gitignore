@@ -11,6 +11,7 @@ node_modules
 .DS_Store
 dist-ssr
 *.local
+dist
 
 /cypress/videos/
 /cypress/screenshots/
