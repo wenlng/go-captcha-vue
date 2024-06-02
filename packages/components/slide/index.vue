@@ -14,9 +14,9 @@
       <div class="loading">
         <loading-icon />
       </div>
-      <img class="picture" :style="imageStyles" :src="data.image" alt="..."/>
+      <img class="picture" v-show="data.image !== ''" :style="imageStyles" :src="data.image" alt="..."/>
       <div class="tile" ref="tileRef" :style="thumbStyles">
-        <img :src="data.thumb" alt="..."/>
+        <img v-show="data.thumb !== ''" :src="data.thumb" alt="..."/>
       </div>
     </div>
     <div class="footer">

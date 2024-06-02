@@ -5,13 +5,13 @@
   >
     <div class="header">
       <span>请在下图<em>依次</em>点击：</span>
-      <img :style="thumbStyles" :src="data.thumb" alt="..." />
+      <img v-show="data.thumb !== ''" :style="thumbStyles" :src="data.thumb" alt="..." />
     </div>
     <div class="body">
       <div class="loading">
         <loading-icon />
       </div>
-      <img :style="imageStyles" class="picture" :src="data.image" alt="..." @click="handler.clickEvent"/>
+      <img :style="imageStyles" v-show="data.image !== ''" class="picture" :src="data.image" alt="..." @click="handler.clickEvent"/>
       <div class="dots">
         <div class="dot" v-for="dot in dots.list" :key="`${dot.key + '-' + dot.index}`" :style="{
           top: (dot.y - 11) + 'px',

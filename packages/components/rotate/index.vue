@@ -15,13 +15,13 @@
         <loading-icon />
       </div>
       <div class="picture" :style="imageStyles">
-        <img :src="data.image" alt="..." />
+        <img v-show="data.image !== ''" :src="data.image" alt="..." />
         <div class="round" />
       </div>
 
       <div class="thumb">
         <div class="thumbBlock" :style="thumbStyles">
-          <img :src="data.thumb" alt="..." />
+          <img v-show="data.thumb !== ''" :src="data.thumb" alt="..." />
         </div>
       </div>
     </div>

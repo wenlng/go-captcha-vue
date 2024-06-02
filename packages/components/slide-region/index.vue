@@ -10,9 +10,9 @@
       <div class="loading">
         <loading-icon />
       </div>
-      <img class="picture" :style="imageStyles" :src="data.image" alt="..."/>
+      <img v-show="data.image !== ''" class="picture" :style="imageStyles" :src="data.image" alt="..."/>
       <div class="tile" ref="tileRef" :style="thumbStyles" @mousedown="handler.dragEvent" @touchstart="handler.dragEvent">
-        <img :src="data.thumb" alt="..."/>
+        <img v-show="data.thumb !== ''" :src="data.thumb" alt="..."/>
       </div>
     </div>
     <div class="footer">

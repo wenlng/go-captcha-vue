@@ -155,6 +155,11 @@ function emitClickEvent(e: any) {
   justify-content: center;
   justify-items: center;
 
+  svg {
+    position: relative;
+    z-index: 10;
+  }
+
   &::after {
     background: #409eff;
     -webkit-border-radius: 50px;
@@ -166,9 +171,11 @@ function emitClickEvent(e: any) {
     height: 20px;
     opacity: 0;
     position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9;
+    top: 50%;
+    left: 50%;
+    margin-top:  -10px;
+    margin-left:  -10px;
+    z-index: 1;
 
     animation: ripple 1.3s infinite;
     -moz-animation: ripple 1.3s infinite;
