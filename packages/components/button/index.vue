@@ -4,7 +4,7 @@
     :style="btnStyle"
     @click="emitClickEvent"
   >
-    <div :class="type === 'default' && 'ripple'">
+    <div :class="type === 'default' ? 'ripple' : ''">
       <btn-default-icon v-if="type === 'default'"/>
       <btn-warn-icon v-else-if="type === 'warn'"/>
       <btn-error-icon v-else-if="type === 'error'"/>
