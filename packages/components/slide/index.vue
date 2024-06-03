@@ -103,7 +103,7 @@ const imageStyles = computed(() => {
 .go-captcha {
   .tile {
     position: absolute;
-    z-index: 30;
+    z-index: 2;
     cursor: pointer;
 
     img {

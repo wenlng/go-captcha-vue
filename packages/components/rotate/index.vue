@@ -118,7 +118,7 @@ const imageStyles = computed(() => {
     position: relative;
     max-width: 100%;
     max-height: 100%;
-    z-index: 10;
+    z-index: 2;
     border-radius: 100%;
     overflow: hidden;
     display: -webkit-box;
@@ -141,14 +141,14 @@ const imageStyles = computed(() => {
       right: 0;
       bottom: 0;
       border-radius: 100%;
-      z-index: 20;
+      z-index: 2;
       border: 6px solid #e0e0e0;
     }
   }
 
   .rotate-thumb {
     position: absolute;
-    z-index: 30;
+    z-index: 2;
     top: 0;
     left: 0;
     right: 0;

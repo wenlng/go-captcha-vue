@@ -105,7 +105,7 @@ const imageStyles = computed(() => {
 
   .tile {
     position: absolute;
-    z-index: 30;
+    z-index: 2;
     cursor: pointer;
 
     img {

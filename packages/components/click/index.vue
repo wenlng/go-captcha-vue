@@ -106,7 +106,7 @@ const imageStyles = computed(() => {
     bottom: 0;
     .dot {
       position: absolute;
-      z-index: 10;
+      z-index: 2;
       width: 20px;
       height: 20px;
       color: #cedffe;

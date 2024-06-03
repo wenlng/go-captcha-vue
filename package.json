@@ -1,6 +1,6 @@
 {
   "name": "go-captcha-vue3",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0",
   "private": false,
   "type": "module",
   "license": "MIT",

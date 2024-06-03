@@ -159,7 +159,7 @@ function emitClickEvent(e: any) {
 
     svg {
       position: relative;
-      z-index: 10;
+      z-index: 2;
     }
 
     &::after {
