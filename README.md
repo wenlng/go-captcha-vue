@@ -1,27 +1,16 @@
 # Go Captcha Vue Package
 
-## vue2
-Greater than or equal to 2.7.14 and less than 3.0
+## 
 ```shell
+# Greater than or equal to vue2.7.14 and less than vue3.0
 yarn add go-captcha-vue
 # or
 npm install go-captcha-vue
 # or
 pnpm install go-captcha-vue
-```
 
-Use Go Captcha
-```vue
-
-import "go-captcha-vue/dist/style.css"
-import GoCaptcha from "go-captcha-vue"
-
-Vue.use(GoCaptcha)
-```
-
-## vue3
-Greater than 3.0
-```shell
+############################################
+# Greater than vue3.0
 yarn add go-captcha-vue3
 # or
 npm install go-captcha-vue3
@@ -30,14 +19,19 @@ pnpm install go-captcha-vue3
 ```
 
 Use Go Captcha
-```vue
+```ts
+// Greater than or equal to vue2.7.14 and less than vue3.0
+import "go-captcha-vue/dist/style.css"
+import GoCaptcha from "go-captcha-vue"
 
+/////////////////////////////////////////
+// Greater than vue3.0
 import "go-captcha-vue3/dist/style.css"
 import GoCaptcha from "go-captcha-vue3"
 
+
 Vue.use(GoCaptcha)
 ```
-
 
 ## 🖖 Click Mode Captcha
 ```vue
