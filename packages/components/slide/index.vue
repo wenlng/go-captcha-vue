@@ -1,6 +1,6 @@
 <template>
   <div
-      :class="`wrapper ${config.showTheme && 'theme'}`"
+      :class="`go-captcha wrapper ${config.showTheme && 'theme'}`"
       :style="wrapperStyles"
   >
     <div class="header">
@@ -43,6 +43,7 @@ import {CaptchaData} from "./meta/data";
 import {CaptchaEvent} from "./meta/event";
 import {useHandler} from "./hooks/handler";
 
+// @ts-ignore
 const props = withDefaults(
     defineProps<{
       config?: CaptchaConfig;
@@ -96,14 +97,15 @@ const imageStyles = computed(() => {
 })
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../../gocaptcha";
 
-.tile{
-  position: absolute;
-  z-index: 30;
-  cursor: pointer;
-  :global{
+.go-captcha {
+  .tile {
+    position: absolute;
+    z-index: 30;
+    cursor: pointer;
+
     img {
       display: block;
       cursor: pointer;

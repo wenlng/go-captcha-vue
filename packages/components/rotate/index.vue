@@ -1,6 +1,6 @@
 <template>
   <div
-      :class="`wrapper ${config.showTheme && 'theme'}`"
+      :class="`go-captcha wrapper ${config.showTheme && 'theme'}`"
       :style="wrapperStyles"
   >
     <div class="header">
@@ -10,17 +10,17 @@
         <refresh-icon :width="22" :height="22" @click="handler.refreshEvent"/>
       </div>
     </div>
-    <div class="body body2" ref="containerRef">
+    <div class="body rotate-body" ref="containerRef">
       <div class="loading">
         <loading-icon />
       </div>
-      <div class="picture" :style="imageStyles">
+      <div class="picture rotate-picture" :style="imageStyles">
         <img v-show="data.image !== ''" :src="data.image" alt="..." />
         <div class="round" />
       </div>
 
-      <div class="thumb">
-        <div class="thumbBlock" :style="thumbStyles">
+      <div class="thumb rotate-thumb">
+        <div class="rotate-thumbBlock" :style="thumbStyles">
           <img v-show="data.thumb !== ''" :src="data.thumb" alt="..." />
         </div>
       </div>
@@ -49,6 +49,7 @@ import {CaptchaData} from "./meta/data";
 import {CaptchaEvent} from "./meta/event";
 import {useHandler} from "./hooks/handler";
 
+// @ts-ignore
 const props = withDefaults(
     defineProps<{
       config?: CaptchaConfig;
@@ -64,7 +65,6 @@ const props = withDefaults(
 
 const { config, data, events } = props;
 
-console.log(props)
 const dragBarRef = ref<any>(null)
 const dragBlockRef = ref<any>(null)
 
@@ -98,74 +98,78 @@ const imageStyles = computed(() => {
 })
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../../gocaptcha";
 
-.body2{
-  background: transparent !important;
-  display: flex;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  justify-content: center;
-  align-items: center;
-}
+.go-captcha {
+  .rotate-body {
+    background: transparent !important;
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.picture{
-  position: relative;
-  max-width: 100%;
-  max-height: 100%;
-  z-index: 10;
-  border-radius: 100%;
-  overflow: hidden;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  img{
+  .rotate-picture {
+    position: relative;
     max-width: 100%;
     max-height: 100%;
+    z-index: 10;
+    border-radius: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .round {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 100%;
+      z-index: 20;
+      border: 6px solid #e0e0e0;
+    }
   }
-}
 
-.round{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 100%;
-  z-index: 20;
-  border: 6px solid #e0e0e0;
-}
+  .rotate-thumb {
+    position: absolute;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
-.thumb{
-  position: absolute;
-  z-index: 30;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  img{
-    max-width: 100%;
-    max-height: 100%;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
-}
-.thumbBlock{
-  width: 100%;
-  height: 100%;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
+  .rotate-thumbBlock {
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+}
 </style>

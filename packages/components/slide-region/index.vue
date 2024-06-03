@@ -1,6 +1,6 @@
 <template>
   <div
-      :class="`wrapper ${config.showTheme && 'theme'}`"
+      :class="`go-captcha wrapper ${config.showTheme && 'theme'}`"
       :style="wrapperStyles"
   >
     <div class="header header2">
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, onMounted, ref} from "vue"
+import {computed, nextTick, onMounted, ref} from "vue"
 import {CaptchaConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
@@ -36,6 +36,7 @@ import {CaptchaData} from "./meta/data";
 import {CaptchaEvent} from "./meta/event";
 import {useHandler} from "./hooks/handler";
 
+// @ts-ignore
 const props = withDefaults(
     defineProps<{
       config?: CaptchaConfig;
@@ -60,9 +61,12 @@ const hPadding = config.horizontalPadding || 0
 const vPadding = config.verticalPadding || 0
 const width = (config.width || 0) + ( vPadding * 2)
 
-onMounted(() => {
-  tileRef.value.addEventListener('dragstart', (event: any) => event.preventDefault());
-})
+onMounted(async () => {
+  await nextTick();
+  if (tileRef.value) {
+    tileRef.value.addEventListener('dragstart', (event: any) => event.preventDefault());
+  }
+});
 
 const wrapperStyles = computed(() => {
   return {
@@ -91,17 +95,19 @@ const imageStyles = computed(() => {
 })
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../../gocaptcha";
 
-.header2{
-  text-align: center;
-}
-.tile{
-  position: absolute;
-  z-index: 30;
-  cursor: pointer;
-  :global{
+.go-captcha {
+  .header2 {
+    text-align: center;
+  }
+
+  .tile {
+    position: absolute;
+    z-index: 30;
+    cursor: pointer;
+
     img {
       display: block;
       cursor: pointer;

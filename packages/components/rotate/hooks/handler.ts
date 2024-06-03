@@ -1,8 +1,7 @@
 import {CaptchaData} from "../meta/data";
 import {CaptchaEvent} from "../meta/event";
-import {reactive} from "vue";
-import {checkTargetFather} from "../../../helper/helper";
-import {Ref} from "vue/types/v3-generated";
+import {reactive, Ref} from "vue";
+import {checkTargetFather} from "@/helper/helper";
 
 export function useHandler(
   data: CaptchaData,

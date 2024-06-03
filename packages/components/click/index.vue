@@ -1,6 +1,6 @@
 <template>
   <div
-      :class="`wrapper ${config.showTheme && 'theme'}`"
+      :class="`go-captcha wrapper ${config.showTheme && 'theme'}`"
       :style="wrapperStyles"
   >
     <div class="header">
@@ -43,6 +43,7 @@ import {CaptchaData} from "./meta/data";
 import {CaptchaEvent} from "./meta/event";
 import {useHandler} from "./hooks/handler";
 
+// @ts-ignore
 const props = withDefaults(
     defineProps<{
       config?: CaptchaConfig;
@@ -89,40 +90,42 @@ const imageStyles = computed(() => {
 })
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../../gocaptcha";
 
-.iconBlock2 {
-  flex: 1;
-}
-
-.dots{
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  .dot {
-    position: absolute;
-    z-index: 10;
-    width: 20px;
-    height: 20px;
-    color: #cedffe;
-    background: #3e7cff;
-    border: 2px solid #f7f9fb;
-    display:-webkit-box;
-    display:-webkit-flex;
-    display:-ms-flexbox;
-    display:flex;
-    -webkit-box-align:center;
-    -webkit-align-items:center;
-    -ms-flex-align:center;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    cursor: default;
-    font-weight: 600;
+.go-captcha {
+  .iconBlock2 {
+    flex: 1;
   }
-}
 
+  .dots{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    .dot {
+      position: absolute;
+      z-index: 10;
+      width: 20px;
+      height: 20px;
+      color: #cedffe;
+      background: #3e7cff;
+      border: 2px solid #f7f9fb;
+      display:-webkit-box;
+      display:-webkit-flex;
+      display:-ms-flexbox;
+      display:flex;
+      -webkit-box-align:center;
+      -webkit-align-items:center;
+      -ms-flex-align:center;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      cursor: default;
+      font-weight: 600;
+    }
+  }
+
+}
 </style>

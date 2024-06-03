@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import Vue from 'vue'
 
 import App from './App.vue'
 // import "../dist/style.css"
@@ -6,8 +6,11 @@ import App from './App.vue'
 // import GoCaptcha from "../dist/go-captcha-vue.es"
 import GoCaptcha from "../packages";
 
-const app = createApp(App)
 // use go captcha
-app.use(GoCaptcha)
+Vue.use(GoCaptcha)
 
-app.mount('#app')
+const app = new Vue({
+  render: (h) => h(App)
+})
+
+app.$mount('#app')

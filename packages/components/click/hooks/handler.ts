@@ -1,6 +1,6 @@
 import {CaptchaData, CaptchaDot} from "../meta/data";
 import {CaptchaEvent} from "../meta/event";
-import {reactive} from "vue";
+import {reactive, toRaw} from "vue";
 import {getDomXY} from "@/helper/helper";
 
 export function useHandler(
@@ -26,7 +26,9 @@ export function useHandler(
     const yy = parseInt(yPos.toString())
     const date = new Date()
     const index = dots.list.length
-    dots.list.push({key: date.getTime(), index: index + 1, x: xx, y: yy})
+    const list = dots.list
+    list.push({key: date.getTime(), index: index + 1, x: xx, y: yy})
+    dots.list = list
 
     event.click && event.click(xx, yy)
     e.cancelBubble = true
@@ -35,7 +37,7 @@ export function useHandler(
   }
 
   const confirmEvent = (e: Event|any) => {
-    event.confirm && event.confirm(dots.list, () => {
+    event.confirm && event.confirm(toRaw(dots.list), () => {
       dots.list = []
     })
     e.cancelBubble = true
