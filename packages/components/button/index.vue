@@ -44,7 +44,7 @@ const { config } = props;
 const { type, title, disabled } = toRefs(props);
 
 const btnClass = computed(() => {
-  return ["go-captcha", "btnBlock", type.value, disabled.value && "disabled"]
+  return ["go-captcha", "btnBlock", type.value, disabled.value ? "disabled" : ""]
 })
 
 const btnStyle = computed(() => {

@@ -1,6 +1,6 @@
 <template>
   <div
-      :class="`go-captcha wrapper ${config.showTheme && 'theme'}`"
+      :class="`go-captcha wrapper ${config.showTheme ? 'theme' : ''}`"
       :style="wrapperStyles"
   >
     <div class="header header2">
