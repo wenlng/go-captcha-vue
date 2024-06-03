@@ -6,7 +6,7 @@
     <div class="header header2">
       <span>请拖动滑块完成拼图</span>
     </div>
-    <div class="body" ref="containerRef">
+    <div class="body" ref="containerRef" :style="imageStyles">
       <div class="loading">
         <loading-icon />
       </div>

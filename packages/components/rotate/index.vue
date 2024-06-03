@@ -10,7 +10,7 @@
         <refresh-icon :width="22" :height="22" @click="handler.refreshEvent"/>
       </div>
     </div>
-    <div class="body rotate-body" ref="containerRef">
+    <div class="body rotate-body" ref="containerRef" :style="imageStyles">
       <div class="loading">
         <loading-icon />
       </div>
@@ -111,6 +111,7 @@ const imageStyles = computed(() => {
     display: -webkit-flex;
     justify-content: center;
     align-items: center;
+    margin: 10px auto 0;
   }
 
   .rotate-picture {

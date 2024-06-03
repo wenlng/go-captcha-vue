@@ -7,7 +7,7 @@
       <span>请在下图<em>依次</em>点击：</span>
       <img v-show="data.thumb !== ''" :style="thumbStyles" :src="data.thumb" alt="..." />
     </div>
-    <div class="body">
+    <div class="body" :style="imageStyles">
       <div class="loading">
         <loading-icon />
       </div>

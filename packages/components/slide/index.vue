@@ -10,7 +10,7 @@
         <refresh-icon :width="22" :height="22" @click="handler.refreshEvent"/>
       </div>
     </div>
-    <div class="body" ref="containerRef">
+    <div class="body" ref="containerRef" :style="imageStyles">
       <div class="loading">
         <loading-icon />
       </div>
