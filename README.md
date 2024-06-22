@@ -2,13 +2,12 @@
 
 <br/>
 
-| Vue Version             | Go Captcha Version |
-|:------------------------|:------------------:|
-| vue >= 2.7.14 && <= 3.0 | go-captcha-vue@^1  |
-| vue >= 3.0              | go-captcha-vue@^2  |
+| Vue Version            | Go Captcha Version |
+|:-----------------------|:------------------:|
+| vue >= 2.7.14 && < 3.0 | go-captcha-vue@^1  |
+| vue >= 3.0             | go-captcha-vue@^2  |
 
 ## Install
-## 
 ```shell
 # Greater than or equal to vue2.7.14 and less than vue3.0
 yarn add go-captcha-vue@^1
@@ -215,7 +214,9 @@ export interface ButtonConfig {
 
 ```
 
-## Buy me a coffee 🍹
+<br/>
+
+## 🍹 Buy me a coffee
 <div>
 <a href="http://witkeycode.com/sponsor" target="_blank"><img src="http://47.104.180.148/payment-code/wxpay.png" alt="Buy Me A Coffee" style="width: 217px !important;" ></a>
 <a href="http://witkeycode.com/sponsor" target="_blank"><img src="http://47.104.180.148/payment-code/alipay.png" alt="Buy Me A Coffee" style="width: 217px !important;" ></a>
