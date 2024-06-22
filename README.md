@@ -197,12 +197,15 @@ interface RotateEvents {
 
 ### params
 ```ts
-interface _ {
-  config?: ButtonConfig;
-  clickEvent?: () => void;   // event -> @clickEvent=""
+interface $Attr {
+  config?: CaptchaConfig;
   disabled?: boolean;
   type?: "default" | "warn" | "error" | "success";
   title?: string;
+}
+
+interface $Event {
+  clickEvent?: Event;     // event -> @clickEvent=""
 }
 
 export interface ButtonConfig {
