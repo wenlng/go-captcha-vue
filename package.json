@@ -1,5 +1,5 @@
 {
-  "name": "go-captcha-vue3",
+  "name": "go-captcha-vue",
   "version": "2.0.0",
   "private": false,
   "type": "module",
@@ -9,13 +9,10 @@
   "description": "This is the vue package for go-captcha",
   "keywords": [
     "go-captcha-vue",
-    "go-captcha-vue3",
     "go-captcha",
     "gocaptcha",
     "captcha-vue",
-    "captcha-vue3",
     "vue-captcha",
-    "vue3-captcha",
     "capts",
     "gocapts"
   ],
