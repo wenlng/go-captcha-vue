@@ -1,5 +1,6 @@
 # Go Captcha Vue Package
 
+## Install
 ## 
 ```shell
 # Greater than or equal to vue2.7.14 and less than vue3.0
@@ -42,10 +43,10 @@ Vue.use(GoCaptcha)
 />
 ```
 
-### params
+### Parameter Reference
 ```ts
 // config = {}
-interface Config {
+interface ClickConfig {
   width?: number;
   height?: number;
   thumbWidth?: number;
@@ -53,20 +54,22 @@ interface Config {
   verticalPadding?: number;
   horizontalPadding?: number;
   showTheme?: boolean;
+  title?: string;
+  buttonText?: string;
 }
 
 // data = {}
-interface Data {
+interface ClickData {
   image: string;
   thumb: string;
 }
 
 // events = {}
-interface Events {
+interface ClickEvents {
   click?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (dots: Array<CaptchaDot>) => boolean;
+  confirm?: (dots: Array<ClickDot>) => boolean;
 }
 ```
 
@@ -84,10 +87,10 @@ interface Events {
   :events="{}"
 />
 ```
-### params
+### Parameter Reference
 ```ts
 // config = {}
-interface Config {
+interface SlideConfig {
   width?: number;
   height?: number;
   thumbWidth?: number;
@@ -95,10 +98,11 @@ interface Config {
   verticalPadding?: number;
   horizontalPadding?: number;
   showTheme?: boolean;
+  title?: string;
 }
 
 // data = {}
-interface Data {
+interface SlideData {
   thumbX: number;
   thumbY: number;
   thumbWidth: number;
@@ -108,14 +112,44 @@ interface Data {
 }
 
 // events = {}
-interface Events {
+interface SlideEvents {
   move?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (point: CaptchaPoint) => boolean;
+  confirm?: (point: SlidePoint) => boolean;
 }
 ```
+```ts
+// config = {}
+interface SlideRegionConfig {
+  width?: number;
+  height?: number;
+  thumbWidth?: number;
+  thumbHeight?: number;
+  verticalPadding?: number;
+  horizontalPadding?: number;
+  showTheme?: boolean;
+  title?: string;
+}
 
+// data = {}
+interface SlideRegionData {
+  thumbX: number;
+  thumbY: number;
+  thumbWidth: number;
+  thumbHeight: number;
+  image: string;
+  thumb: string;
+}
+
+// events = {}
+interface SlideRegionEvents {
+  move?: (x: number, y: number) => void;
+  refresh?: () => void;
+  close?: () => void;
+  confirm?: (point: SlideRegionPoint) => boolean;
+}
+```
 
 ## 🖖 Rotate Mode Captcha
 ```vue
@@ -126,10 +160,10 @@ interface Events {
 />
 ```
 
-### params
+### Parameter Reference
 ```ts
 // config = {}
-interface Config {
+interface RotateConfig {
   width?: number;
   height?: number;
   thumbWidth?: number;
@@ -137,20 +171,46 @@ interface Config {
   verticalPadding?: number;
   horizontalPadding?: number;
   showTheme?: boolean;
+  title?: string;
 }
 
 // data = {}
-interface Data {
+interface RotateData {
   angle: number;
   image: string;
   thumb: string;
 }
 
 // events = {}
-interface Events {
+interface RotateEvents {
   rotate?: (angle: number) => void;
   refresh?: () => void;
   close?: () => void;
   confirm?: (angle: number) => boolean;
 }
+```
+
+
+## Button
+```vue
+<gocaptcha-button />
+```
+
+### params
+```ts
+interface _ {
+  config?: ButtonConfig;
+  clickEvent?: () => void;
+  disabled?: boolean;
+  type?: "default" | "warn" | "error" | "success";
+  title?: string;
+}
+
+export interface ButtonConfig {
+  width?: number;
+  height?: number;
+  verticalPadding?: number;
+  horizontalPadding?: number;
+}
+
 ```

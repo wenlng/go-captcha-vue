@@ -5,7 +5,9 @@ import SlideRegion from "./components/slide-region/index"
 import Rotate from "./components/rotate/index"
 import Button from "./components/button/index"
 
-export default {
+export { Click, Slide, SlideRegion, Rotate, Button };
+
+const installed = {
   install(vue: any) {
     // @ts-ignore
     Click.install(vue)
@@ -19,3 +21,5 @@ export default {
     Button.install(vue)
   }
 }
+
+export default installed

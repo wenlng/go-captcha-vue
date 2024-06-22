@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,6 +11,23 @@ export default defineConfig({
     vue(),
     vueJsx(),
   ],
+  css: {
+    postcss: {
+      plugins: [
+        autoprefixer({
+          overrideBrowserslist: [
+            'Android 4.1',
+            'iOS 7.1',
+            'Chrome > 31',
+            'ff > 31',
+            'ie >= 8',
+            '> 1%',
+          ],
+          grid: true,
+        }),
+      ],
+    },
+  },
   resolve: {
     alias: {
       'packages': fileURLToPath(new URL('./packages', import.meta.url)),

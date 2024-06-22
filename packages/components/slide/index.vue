@@ -1,28 +1,28 @@
 <template>
   <div
-      :class="`go-captcha wrapper ${config.showTheme ? 'theme' : ''}`"
+      :class="`go-captcha gc-wrapper ${config.showTheme ? 'gc-theme' : ''}`"
       :style="wrapperStyles"
   >
-    <div class="header">
-      <span>请拖动滑块完成拼图</span>
-      <div class="iconBlock">
+    <div class="gc-header">
+      <span>{{ config.title }}</span>
+      <div class="gc-icon-block">
         <close-icon :width="22" :height="22" @click="handler.closeEvent"/>
         <refresh-icon :width="22" :height="22" @click="handler.refreshEvent"/>
       </div>
     </div>
-    <div class="body" ref="containerRef" :style="imageStyles">
-      <div class="loading">
+    <div class="gc-body" ref="containerRef" :style="imageStyles">
+      <div class="gc-loading">
         <loading-icon />
       </div>
-      <img class="picture" v-show="data.image !== ''" :style="imageStyles" :src="data.image" alt="..."/>
-      <div class="tile" ref="tileRef" :style="thumbStyles">
+      <img class="gc-picture" v-show="data.image !== ''" :style="imageStyles" :src="data.image" alt="..."/>
+      <div class="gc-tile" ref="tileRef" :style="thumbStyles">
         <img v-show="data.thumb !== ''" :src="data.thumb" alt="..."/>
       </div>
     </div>
-    <div class="footer">
-      <div class="dragSlideBar" ref="dragBarRef" @mousedown="handler.dragEvent">
-        <div class="dragLine" />
-        <div class="dragBlock" ref="dragBlockRef" @touchstart="handler.dragEvent" :style="{left: handler.state.dragLeft + 'px'}">
+    <div class="gc-footer">
+      <div class="gc-drag-slide-bar" ref="dragBarRef" @mousedown="handler.dragEvent">
+        <div class="gc-drag-line" />
+        <div class="gc-drag-block" ref="dragBlockRef" @touchstart="handler.dragEvent" :style="{left: handler.state.dragLeft + 'px'}">
         <arrows-icon />
       </div>
     </div>
@@ -31,33 +31,43 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from "vue"
-import {CaptchaConfig, defaultConfig} from "./meta/config";
+import {computed, nextTick, onMounted, ref, watch} from "vue"
+import {SlideConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
 import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 import ArrowsIcon from "../../assets/icons/arrows-icon.vue";
 
-import {CaptchaData} from "./meta/data";
-import {CaptchaEvent} from "./meta/event";
+import {SlideData} from "./meta/data";
+import {SlideEvent} from "./meta/event";
 import {useHandler} from "./hooks/handler";
 
 // @ts-ignore
 const props = withDefaults(
     defineProps<{
-      config?: CaptchaConfig;
-      events?: CaptchaEvent,
-      data: CaptchaData,
+      config?: SlideConfig;
+      events?: SlideEvent,
+      data: SlideData,
     }>(),
     {
       config: defaultConfig,
-      events: () => ({} as CaptchaEvent),
-      data: () => ({} as CaptchaData),
+      events: () => ({} as SlideEvent),
+      data: () => ({} as SlideData),
     },
 )
 
-const { config, data, events } = props;
+const { data, events } = props;
+const config = ref({
+  ...defaultConfig(),
+  ...props.config,
+})
+watch(() => props.config, () => {
+  config.value = {
+    ...config.value,
+    ...props.config
+  }
+})
 
 const dragBarRef = ref<any>(null)
 const containerRef = ref<any>(null)
@@ -66,17 +76,17 @@ const tileRef = ref<any>(null)
 
 const handler = useHandler(data, events, containerRef, tileRef, dragBlockRef, dragBarRef);
 
-const hPadding = config.horizontalPadding || 0
-const vPadding = config.verticalPadding || 0
-const width = (config.width || 0) + ( vPadding * 2)
+const hPadding = config.value.horizontalPadding || 0
+const vPadding = config.value.verticalPadding || 0
+const width = (config.value.width || 0) + ( hPadding * 2) + (config.value.showTheme ? 2 : 0)
 
 const wrapperStyles = computed(() => {
   return {
     width:  width+ "px",
-    paddingLeft: vPadding + "px",
-    paddingRight: vPadding + "px",
-    paddingTop: hPadding + "px",
-    paddingBottom: hPadding + "px",
+    paddingLeft: hPadding + "px",
+    paddingRight: hPadding + "px",
+    paddingTop: vPadding + "px",
+    paddingBottom: vPadding + "px",
   }
 })
 
@@ -91,17 +101,22 @@ const thumbStyles = computed(() => {
 
 const imageStyles = computed(() => {
   return {
-    width: config.width + "px",
-    height: config.height + "px"
+    width: config.value.width + "px",
+    height: config.value.height + "px"
   }
 })
+
+onMounted(async () => {
+  await nextTick();
+  if (dragBlockRef.value) {
+    dragBlockRef.value.addEventListener('dragstart', (event: any) => event.preventDefault());
+  }
+});
 </script>
 
 <style lang="less">
-@import "../../gocaptcha";
-
 .go-captcha {
-  .tile {
+  .gc-tile {
     position: absolute;
     z-index: 2;
     cursor: pointer;

@@ -4,6 +4,8 @@
   "private": false,
   "type": "module",
   "license": "MIT",
+  "email": "wengaolng@gmail.com",
+  "author": "Awen <wengaolng@gmail.com>",
   "description": "This is the vue package for go-captcha",
   "keywords": [
     "go-captcha-vue",
@@ -24,6 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/wenlng/go-captcha-vue.git"
   },
+  "homepage": "https://github.com/wenlng/go-captcha-vue",
   "main": "dist/go-captcha-vue.umd.js",
   "module": "dist/go-captcha-vue.es.js",
   "types": "./dist/index.d.ts",
@@ -40,6 +43,9 @@
     "preview": "vite preview --port 5050",
     "type-check": "vue-tsc --noEmit -p tsconfig.json"
   },
+  "peerDependencies": {
+    "vue": ">=3"
+  },
   "dependencies": {
     "vue": "^3.0.1"
   },
@@ -47,6 +53,7 @@
     "@types/node": "^16.11.10",
     "@vitejs/plugin-vue": "4.4.0",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "autoprefixer": "^10.4.19",
     "fast-glob": "^3.3.2",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",

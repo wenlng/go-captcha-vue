@@ -1,11 +1,11 @@
-import {CaptchaData} from "../meta/data";
-import {CaptchaEvent} from "../meta/event";
+import {RotateData} from "../meta/data";
+import {RotateEvent} from "../meta/event";
 import {reactive, Ref} from "vue";
 import {checkTargetFather} from "@/helper/helper";
 
 export function useHandler(
-  data: CaptchaData,
-  event: CaptchaEvent,
+  data: RotateData,
+  event: RotateEvent,
   dragBlockRef: Ref,
   dragBarRef: Ref,
 ) {

@@ -4,7 +4,7 @@
  * @Email wengaolng@gmail.com
  **/
 
-export interface CaptchaData {
+export interface RotateData {
   angle: number;
   image: string;
   thumb: string;

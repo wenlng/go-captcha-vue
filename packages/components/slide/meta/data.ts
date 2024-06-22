@@ -4,7 +4,7 @@
  * @Email wengaolng@gmail.com
  **/
 
-export interface CaptchaData {
+export interface SlideData {
   thumbX: number;
   thumbY: number;
   thumbWidth: number;
@@ -13,7 +13,7 @@ export interface CaptchaData {
   thumb: string;
 }
 
-export interface CaptchaPoint {
+export interface SlidePoint {
   x: number,
   y: number,
 }

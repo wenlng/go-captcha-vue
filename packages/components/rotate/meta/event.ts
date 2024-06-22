@@ -4,7 +4,7 @@
  * @Email wengaolng@gmail.com
  **/
 
-export interface CaptchaEvent {
+export interface RotateEvent {
   rotate?: (angle: number) => void;
   refresh?: () => void;
   close?: () => void;

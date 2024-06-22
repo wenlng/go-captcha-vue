@@ -5,12 +5,12 @@
  **/
 
 
-export interface CaptchaData {
+export interface ClickData {
   image: string;
   thumb: string;
 }
 
-export interface CaptchaDot {
+export interface ClickDot {
   key: number,
   index: number,
   x: number,

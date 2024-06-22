@@ -1,13 +1,13 @@
-import {CaptchaData, CaptchaDot} from "../meta/data";
-import {CaptchaEvent} from "../meta/event";
+import {ClickData, ClickDot} from "../meta/data";
+import {ClickEvent} from "../meta/event";
 import {reactive, toRaw} from "vue";
 import {getDomXY} from "@/helper/helper";
 
 export function useHandler(
-  _data: CaptchaData,
-  event: CaptchaEvent,
+  _data: ClickData,
+  event: ClickEvent,
 ) {
-  const dots = reactive<{list: Array<CaptchaDot>}>({list: []})
+  const dots = reactive<{list: Array<ClickDot>}>({list: []})
 
   const clickEvent = (e: Event|any) => {
     const dom = e.currentTarget

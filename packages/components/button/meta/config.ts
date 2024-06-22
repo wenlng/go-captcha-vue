@@ -4,14 +4,14 @@
  * @Email wengaolng@gmail.com
  **/
 
-export interface CaptchaConfig {
+export interface ButtonConfig {
   width?: number;
   height?: number;
   verticalPadding?: number;
   horizontalPadding?: number;
 }
 
-export const defaultConfig = ():CaptchaConfig => ({
+export const defaultConfig = ():ButtonConfig => ({
   width: 330,
   height: 44,
   verticalPadding: 12,

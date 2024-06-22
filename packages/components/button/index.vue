@@ -4,7 +4,7 @@
     :style="btnStyle"
     @click="emitClickEvent"
   >
-    <div :class="type === 'default' ? 'ripple' : ''">
+    <div :class="type === 'default' ? 'gc-ripple' : ''">
       <btn-default-icon v-if="type === 'default'"/>
       <btn-warn-icon v-else-if="type === 'warn'"/>
       <btn-error-icon v-else-if="type === 'error'"/>
@@ -15,21 +15,22 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, defineEmits, toRefs} from "vue"
+import {computed, defineEmits, ref, toRefs, watch} from "vue"
 import BtnDefaultIcon from "../../assets/icons/btn-default-icon.vue";
 import BtnWarnIcon from "../../assets/icons/btn-warn-icon.vue";
 import BtnErrorIcon from "../../assets/icons/btn-error-icon.vue";
 import BtnSuccessIcon from "../../assets/icons/btn-success-icon.vue";
 
-import {CaptchaConfig, defaultConfig} from "./meta/config";
+import {ButtonConfig, defaultConfig} from "./meta/config";
+import {ButtonType} from "@/components/button/meta/types";
 
 // @ts-ignore
 const props = withDefaults(
     defineProps<{
-      config?: CaptchaConfig;
+      config?: ButtonConfig;
       clickEvent?: () => void;
       disabled?: boolean;
-      type?: "default" | "warn" | "error" | "success";
+      type?: ButtonType;
       title?: string;
     }>(),
     {
@@ -40,21 +41,32 @@ const props = withDefaults(
     },
 )
 
-const { config } = props;
 const { type, title, disabled } = toRefs(props);
 
+const conf = ref({
+  ...defaultConfig(),
+  ...props.config,
+})
+watch(() => props.config, () => {
+  conf.value = {
+    ...conf.value,
+    ...props.config
+  }
+})
+
 const btnClass = computed(() => {
-  return ["go-captcha", "btnBlock", type.value, disabled.value ? "disabled" : ""]
+  const tc = `gc-${type.value}`
+  return ["go-captcha", "gc-btn-block", tc, disabled.value ? "gc-disabled" : ""]
 })
 
 const btnStyle = computed(() => {
   return {
-    width:  config.width + "px",
-    height: config.height + "px",
-    paddingLeft: config.verticalPadding + "px",
-    paddingRight: config.verticalPadding + "px",
-    paddingTop: config.verticalPadding + "px",
-    paddingBottom: config.verticalPadding + "px",
+    width:  conf.value.width + "px",
+    height: conf.value.height + "px",
+    paddingLeft: conf.value.horizontalPadding + "px",
+    paddingRight: conf.value.horizontalPadding + "px",
+    paddingTop: conf.value.verticalPadding + "px",
+    paddingBottom: conf.value.verticalPadding + "px",
   }
 })
 
@@ -67,7 +79,7 @@ function emitClickEvent(e: any) {
 
 <style lang="less">
 .go-captcha {
-  &.btnBlock {
+  &.gc-btn-block {
     position: relative;
     box-sizing: border-box;
 
@@ -108,43 +120,47 @@ function emitClickEvent(e: any) {
     }
   }
 
-  &.disabled{
+  &.gc-disabled{
     pointer-events: none;
   }
 
-  &.default{
-    color: #3e7cff;
+  &.gc-default{
+    color: var(--go-captcha-theme-default-color);
     border: 1px solid #50a1ff;
-    background: #ecf5ff;
+    border-color: var(--go-captcha-theme-default-border-color);
+    background-color: var(--go-captcha-theme-default-bg-color);
     cursor: pointer;
 
     &:hover{
-      background: #e0efff !important;
+      background-color: var(--go-captcha-theme-default-hover-color) !important;
     }
   }
 
-  &.error{
+  &.gc-error{
     cursor: pointer;
-    color: #ed4630;
-    background: #fef0f0;
+    color: var(--go-captcha-theme-error-color);
+    background-color: var(--go-captcha-theme-error-bg-color);
     border: 1px solid #ff5a34;
+    border-color: var(--go-captcha-theme-error-border-color);
   }
 
-  &.warn{
+  &.gc-warn{
     cursor: pointer;
-    color: #ffa000;
-    background: #fdf6ec;
+    color: var(--go-captcha-theme-warn-color);
+    background-color: var(--go-captcha-theme-warn-bg-color);
     border: 1px solid #ffbe09;
+    border-color: var(--go-captcha-theme-warn-border-color);
   }
 
-  &.success{
-    color: #5eaa2f;
-    background: #f0f9eb;
+  &.gc-success{
+    color: var(--go-captcha-theme-success-color);
+    background-color: var(--go-captcha-theme-success-bg-color);
     border: 1px solid #8bc640;
+    border-color: var(--go-captcha-theme-success-border-color);
     pointer-events: none;
   }
 
-  .ripple{
+  .gc-ripple{
     position: relative;
     display:-webkit-box;
     display:-webkit-flex;
@@ -157,31 +173,35 @@ function emitClickEvent(e: any) {
     justify-content: center;
     justify-items: center;
 
+    & > *{
+      z-index: 2;
+    }
+
     svg {
       position: relative;
       z-index: 2;
     }
 
     &::after {
-      background: #409eff;
+      background-color: var(--go-captcha-theme-default-border-color);
       -webkit-border-radius: 50px;
       -moz-border-radius: 50px;
       border-radius: 50px;
       content: "";
       display: block;
-      width: 20px;
-      height: 20px;
+      width: 21px;
+      height: 21px;
       opacity: 0;
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-top:  -10px;
-      margin-left:  -10px;
+      margin-top:  -11px;
+      margin-left:  -11px;
       z-index: 1;
 
-      animation: ripple 1.3s infinite;
-      -moz-animation: ripple 1.3s infinite;
-      -webkit-animation: ripple 1.3s infinite;
+      animation: gc-ripple 1.3s infinite;
+      -moz-animation: gc-ripple 1.3s infinite;
+      -webkit-animation: gc-ripple 1.3s infinite;
       animation-delay: 2s;
       -moz-animation-delay: 2s;
       -webkit-animation-delay: 2s;
@@ -189,7 +209,7 @@ function emitClickEvent(e: any) {
   }
 }
 
-@keyframes ripple {
+@keyframes gc-ripple {
   0% { opacity: 0; }
   5% { opacity: 0.05; }
   20% { opacity: 0.35; }
@@ -199,7 +219,7 @@ function emitClickEvent(e: any) {
     opacity: 0;
   }
 }
-@-webkit-keyframes ripple {
+@-webkit-keyframes gc-ripple {
   0% { opacity: 0; }
   5% { opacity: 0.05; }
   20% { opacity: 0.35; }

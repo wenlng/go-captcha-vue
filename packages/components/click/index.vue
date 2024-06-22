@@ -1,110 +1,119 @@
 <template>
   <div
-      :class="`go-captcha wrapper ${config.showTheme ? 'theme' : ''}`"
+      :class="`go-captcha gc-wrapper ${config.showTheme ? 'gc-theme' : ''}`"
       :style="wrapperStyles"
   >
-    <div class="header">
-      <span>请在下图<em>依次</em>点击：</span>
+    <div class="gc-header">
+      <span>{{ config.title }}</span>
       <img v-show="data.thumb !== ''" :style="thumbStyles" :src="data.thumb" alt="..." />
     </div>
-    <div class="body" :style="imageStyles">
-      <div class="loading">
+    <div class="gc-body" :style="imageStyles">
+      <div class="gc-loading">
         <loading-icon />
       </div>
-      <img :style="imageStyles" v-show="data.image !== ''" class="picture" :src="data.image" alt="..." @click="handler.clickEvent"/>
-      <div class="dots">
-        <div class="dot" v-for="dot in dots.list" :key="`${dot.key + '-' + dot.index}`" :style="{
+      <img :style="imageStyles" v-show="data.image !== ''" class="gc-picture" :src="data.image" alt="..." @click="handler.clickEvent"/>
+      <div class="gc-dots">
+        <div class="gc-dot" v-for="dot in dots.list" :key="`${dot.key + '-' + dot.index}`" :style="{
           top: (dot.y - 11) + 'px',
           left: (dot.x - 11) + 'px',
         }">{{dot.index}}</div>
       </div>
     </div>
-    <div class="footer">
-      <div class="iconBlock iconBlock2">
+    <div class="gc-footer">
+      <div class="gc-icon-block gc-icon-block2">
         <close-icon :width="22" :height="22" @click="handler.closeEvent"/>
         <refresh-icon :width="22" :height="22" @click="handler.refreshEvent"/>
       </div>
-      <div class="buttonBlock">
-        <button @click="handler.confirmEvent">确认</button>
+      <div class="gc-button-block">
+        <button @click="handler.confirmEvent">{{ config.buttonText }}</button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue"
-import {CaptchaConfig, defaultConfig} from "./meta/config";
+import {computed, ref, watch} from "vue"
+import {ClickConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
 import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 
-import {CaptchaData} from "./meta/data";
-import {CaptchaEvent} from "./meta/event";
+import {ClickData} from "./meta/data";
+import {ClickEvent} from "./meta/event";
 import {useHandler} from "./hooks/handler";
 
 // @ts-ignore
 const props = withDefaults(
     defineProps<{
-      config?: CaptchaConfig;
-      events?: CaptchaEvent,
-      data: CaptchaData,
+      config?: ClickConfig;
+      events?: ClickEvent,
+      data: ClickData,
     }>(),
     {
       config: defaultConfig,
-      events: () => ({} as CaptchaEvent),
-      data: () => ({} as CaptchaData),
+      events: () => ({} as ClickEvent),
+      data: () => ({} as ClickData),
     },
 )
 
-const { config, data, events } = props;
+const { data, events } = props;
+const config = ref({
+  ...defaultConfig(),
+  ...props.config,
+})
+watch(() => props.config, () => {
+  config.value = {
+    ...config.value,
+    ...props.config
+  }
+})
+
 const handler = useHandler(data, events);
 
-const hPadding = config.horizontalPadding || 0
-const vPadding = config.verticalPadding || 0
-const width = (config.width || 0) + ( vPadding * 2)
+const hPadding = config.value.horizontalPadding || 0
+const vPadding = config.value.verticalPadding || 0
+const width = (config.value.width || 0) + ( hPadding * 2) + (config.value.showTheme ? 2 : 0)
 const dots = handler.dots
 
 const wrapperStyles = computed(() => {
   return {
     width:  width+ "px",
-    paddingLeft: vPadding + "px",
-    paddingRight: vPadding + "px",
-    paddingTop: hPadding + "px",
-    paddingBottom: hPadding + "px",
+    paddingLeft: hPadding + "px",
+    paddingRight: hPadding + "px",
+    paddingTop: vPadding + "px",
+    paddingBottom: vPadding + "px",
   }
 })
 
 const thumbStyles = computed(() => {
   return {
-    width: config.thumbWidth + "px",
-    height: config.thumbHeight + "px",
+    width: config.value.thumbWidth + "px",
+    height: config.value.thumbHeight + "px",
   }
 })
 
 const imageStyles = computed(() => {
   return {
-    width: config.width + "px",
-    height: config.height + "px"
+    width: config.value.width + "px",
+    height: config.value.height + "px"
   }
 })
 </script>
 
 <style lang="less">
-@import "../../gocaptcha";
-
 .go-captcha {
-  .iconBlock2 {
+  .gc-icon-block2 {
     flex: 1;
   }
 
-  .dots{
+  .gc-dots{
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
-    .dot {
+    .gc-dot {
       position: absolute;
       z-index: 2;
       width: 20px;
@@ -123,9 +132,7 @@ const imageStyles = computed(() => {
       justify-content: center;
       border-radius: 20px;
       cursor: default;
-      font-weight: 600;
     }
   }
-
 }
 </style>

@@ -4,18 +4,20 @@
  * @Email wengaolng@gmail.com
  **/
 
-export interface CaptchaConfig {
+export interface SlideRegionConfig {
   width?: number;
   height?: number;
   verticalPadding?: number;
   horizontalPadding?: number;
   showTheme?: boolean;
+  title?: string;
 }
 
-export const defaultConfig = ():CaptchaConfig => ({
+export const defaultConfig = ():SlideRegionConfig => ({
   width: 300,
-  height: 240,
+  height: 220,
   verticalPadding: 16,
   horizontalPadding: 12,
   showTheme: true,
+  title: "请拖拽贴图完成拼图",
 })

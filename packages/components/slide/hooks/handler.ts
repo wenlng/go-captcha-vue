@@ -1,11 +1,11 @@
-import {CaptchaData} from "../meta/data";
-import {CaptchaEvent} from "../meta/event";
+import {SlideData} from "../meta/data";
+import {SlideEvent} from "../meta/event";
 import {reactive, Ref} from "vue";
 import {checkTargetFather} from "@/helper/helper";
 
 export function useHandler(
-  data: CaptchaData,
-  event: CaptchaEvent,
+  data: SlideData,
+  event: SlideEvent,
   containerRef: Ref,
   tileRef: Ref,
   dragBlockRef: Ref,

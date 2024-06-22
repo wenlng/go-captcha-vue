@@ -4,11 +4,11 @@
  * @Email wengaolng@gmail.com
  **/
 
-import {CaptchaPoint} from "./data";
+import type {SlideRegionPoint} from "./data";
 
-export interface CaptchaEvent {
+export interface SlideRegionEvent {
   move?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (point: CaptchaPoint, clear:(fn: Function) => void) => void;
+  confirm?: (point: SlideRegionPoint, clear:(fn: Function) => void) => void;
 }
