@@ -209,7 +209,7 @@ interface $Attr {
 }
 
 interface $Event {
-  clickEvent?: Event;     // event -> @clickEvent=""
+  clickEvent?: ()=>void;     // event -> @clickEvent=""
 }
 
 export interface ButtonConfig {
