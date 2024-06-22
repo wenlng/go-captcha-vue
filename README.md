@@ -1,5 +1,9 @@
 # Go Captcha Vue Package
 
+<p> ⭐️ If it helps you, please give a star.</p>
+<img src="http://47.104.180.148/go-captcha/go-captcha-v2.jpg" alt="Poster">
+
+
 <br/>
 
 | Vue Version            | Go Captcha Version |
