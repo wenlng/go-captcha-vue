@@ -196,14 +196,14 @@ interface RotateEvents {
 
 ## Button
 ```vue
-<gocaptcha-button />
+<gocaptcha-button @clickEvent="() => console.log('hello')"/>
 ```
 
 ### params
 ```ts
 interface _ {
   config?: ButtonConfig;
-  clickEvent?: () => void;
+  clickEvent?: Event;   // event -> @clickEvent=""
   disabled?: boolean;
   type?: "default" | "warn" | "error" | "success";
   title?: string;
