@@ -1,7 +1,7 @@
 import capt from './index.vue'
 
 // @ts-ignore
-capt.name = 'goCaptchaRotate'
+capt.name = 'gocaptcha-rotate'
 
 // @ts-ignore
 capt.install = function(Vue: any) {

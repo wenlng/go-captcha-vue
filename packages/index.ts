@@ -7,19 +7,10 @@ import Button from "./components/button/index"
 
 export { Click, Slide, SlideRegion, Rotate, Button };
 
-const installed = {
-  install(vue: any) {
-    // @ts-ignore
-    Click.install(vue)
-    // @ts-ignore
-    Slide.install(vue)
-    // @ts-ignore
-    SlideRegion.install(vue)
-    // @ts-ignore
-    Rotate.install(vue)
-    // @ts-ignore
-    Button.install(vue)
-  }
+const install = (app: any) => {
+  if (app['installed']) return
+  app['installed'] = true
+  ;[Click, Slide, SlideRegion, Rotate, Button].map(c => app.use(c))
 }
 
-export default installed
+export default install

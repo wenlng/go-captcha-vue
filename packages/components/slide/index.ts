@@ -1,7 +1,7 @@
 import capt from './index.vue'
 
 // @ts-ignore
-capt.name = 'goCaptchaSlide'
+capt.name = 'gocaptcha-slide'
 
 // @ts-ignore
 capt.install = function(Vue: any) {
