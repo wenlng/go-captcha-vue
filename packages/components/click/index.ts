@@ -1,7 +1,7 @@
 import capt from './index.vue'
 
 // @ts-ignore
-capt.name = 'goCaptchaClick'
+capt.name = 'gocaptcha-click'
 
 // @ts-ignore
 capt.install = function(Vue: any) {

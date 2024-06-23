@@ -1,6 +1,6 @@
 {
   "name": "go-captcha-vue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "type": "module",
   "license": "MIT",
@@ -25,6 +25,19 @@
   "module": "dist/go-captcha-vue.es.js",
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "node": "./dist/go-captcha-vue.es.js",
+        "default": "./dist/go-captcha-vue.es.js"
+      },
+      "require": "./dist/go-captcha-vue.es.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./dist/*": "./dist/*",
+    "./env.d.ts": "./env.d.ts",
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist/*",
     "env.d.ts"
