@@ -7,9 +7,10 @@ import Button from "./components/button/index"
 
 export { Click, Slide, SlideRegion, Rotate, Button };
 
+const INSTALL_TAG = 'go_captcha_installed'
 const install = (app: any) => {
-  if (app['installed']) return
-  app['installed'] = true
+  if (app[INSTALL_TAG]) return
+  app[INSTALL_TAG] = true
   ;[Click, Slide, SlideRegion, Rotate, Button].map(c => app.use(c))
 }
 
