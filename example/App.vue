@@ -84,6 +84,13 @@ const slideEvents = {
     slideData.thumbY = 60
     slideData.image = clickImage2
   },
+  confirm(dots: any, clear: Function): void {
+    console.log("dots >>>>>>>", dots)
+
+    setTimeout(() => {
+      clear()
+    }, 100)
+  },
   close(): void {
     console.log("close >>>>>>>")
   }
@@ -100,6 +107,13 @@ const slideRegionData = reactive({
 const slideRegionEvents = {
   move(x: number, y: number): void {
     console.log("move >>>>>>>", x, y)
+  },
+  confirm(dots: any, clear: Function): void {
+    console.log("dots >>>>>>>", dots)
+
+    setTimeout(() => {
+      clear()
+    }, 100)
   },
   refresh(): void {
     console.log("refresh >>>>>>>")
@@ -121,6 +135,13 @@ const rotateData = reactive({
 const rotateEvents = {
   rotate(angle: number): void {
     console.log("rotate >>>>>>>", angle)
+  },
+  confirm(point: any, clear: Function): void {
+    console.log("point >>>>>>>", point)
+
+    setTimeout(() => {
+      clear()
+    }, 100)
   },
   refresh(): void {
     console.log("refresh >>>>>>>")

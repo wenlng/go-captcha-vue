@@ -31,6 +31,7 @@ export function useHandler(
     const ratio = ((maxWidth - thumbX) + ad) / maxWidth
 
     let isMoving = false
+    let tmpLeaveDragEvent: Event|any = null
     let startX = 0
     let currentThumbX = 0
     if (touch) {
@@ -79,14 +80,8 @@ export function useHandler(
         return
       }
 
-      dragBarRef.value.removeEventListener("mousemove", moveEvent, false)
-      dragBarRef.value.removeEventListener("touchmove", moveEvent, { passive: false })
-
-      dragBarRef.value.removeEventListener( "mouseup", upEvent, false)
-      dragBarRef.value.removeEventListener( "mouseout", upEvent, false)
-      dragBarRef.value.removeEventListener("touchend", upEvent, false)
-
       isMoving = false
+      clearEvent()
       event.confirm && event.confirm({x: parseInt(currentThumbX.toString()), y: data.thumbY || 0}, () => {
         clear()
       })
@@ -95,11 +90,47 @@ export function useHandler(
       e.preventDefault()
     }
 
+    const leaveDragBlockEvent = (e: Event|any) => {
+      tmpLeaveDragEvent = e
+    }
+
+    const enterDragBlockEvent = () => {
+      tmpLeaveDragEvent = null
+    }
+
+    const leaveUpEvent = (_: Event|any) => {
+      if(!tmpLeaveDragEvent) {
+        return
+      }
+
+      upEvent(tmpLeaveDragEvent)
+      clearEvent()
+    }
+
+    const clearEvent = () => {
+      dragBarRef.value.removeEventListener("mousemove", moveEvent, false)
+      dragBarRef.value.removeEventListener("touchmove", moveEvent, { passive: false })
+
+      dragBarRef.value.removeEventListener( "mouseup", upEvent, false)
+      // dragBarRef.value.removeEventListener( "mouseout", upEvent, false)
+      dragBarRef.value.removeEventListener( "mouseenter", enterDragBlockEvent, false)
+      dragBarRef.value.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
+      dragBarRef.value.removeEventListener("touchend", upEvent, false)
+
+      document.body.removeEventListener("mouseleave", upEvent, false)
+      document.body.removeEventListener("mouseup", leaveUpEvent, false)
+    }
+
     dragBarRef.value.addEventListener("mousemove", moveEvent, false)
     dragBarRef.value.addEventListener("touchmove", moveEvent, { passive: false })
     dragBarRef.value.addEventListener( "mouseup", upEvent, false)
-    dragBarRef.value.addEventListener( "mouseout", upEvent, false)
+    // dragBarRef.value.addEventListener( "mouseout", upEvent, false)
+    dragBarRef.value.addEventListener( "mouseenter", enterDragBlockEvent, false)
+    dragBarRef.value.addEventListener( "mouseleave", leaveDragBlockEvent, false)
     dragBarRef.value.addEventListener("touchend", upEvent, false)
+
+    document.body.addEventListener("mouseleave", upEvent, false)
+    document.body.addEventListener("mouseup", leaveUpEvent, false)
   }
 
   const closeEvent = (e: Event|any) => {
