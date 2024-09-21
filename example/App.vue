@@ -90,6 +90,13 @@ const slideEvents = {
     slideData.thumbY = 60
     slideData.image = clickImage2
   },
+  confirm(point: any, clear: Function): void {
+    console.log("point >>>>>>>", point)
+
+    setTimeout(() => {
+      clear()
+    }, 10)
+  },
   close(): void {
     console.log("close >>>>>>>")
   }
@@ -114,6 +121,13 @@ const slideRegionEvents = {
     slideRegionData.thumbY = 60
     slideRegionData.image = clickImage2
   },
+  confirm(point: any, clear: Function): void {
+    console.log("point >>>>>>>", point)
+
+    setTimeout(() => {
+      clear()
+    }, 10)
+  },
   close(): void {
     console.log("close >>>>>>>")
   }
@@ -131,6 +145,13 @@ const rotateEvents = {
   refresh(): void {
     console.log("refresh >>>>>>>")
     rotateData.image = clickImage2
+  },
+  confirm(angle: any, clear: Function): void {
+    console.log("angle >>>>>>>", angle)
+
+    setTimeout(() => {
+      clear()
+    }, 10)
   },
   close(): void {
     console.log("close >>>>>>>")

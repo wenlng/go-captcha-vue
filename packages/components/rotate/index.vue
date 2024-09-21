@@ -26,10 +26,12 @@
       </div>
     </div>
     <div class="gc-footer">
-      <div class="gc-drag-slide-bar" ref="dragBarRef" @mousedown="handler.dragEvent">
+      <div class="gc-drag-slide-bar" ref="dragBarRef">
         <div class="gc-drag-line" />
-        <div class="gc-drag-block" ref="dragBlockRef" @touchstart="handler.dragEvent" :style="{left: handler.state.dragLeft + 'px'}">
-          <arrows-icon />
+        <div class="gc-drag-block" ref="dragBlockRef" @mousedown="handler.dragEvent" :style="{left: handler.state.dragLeft + 'px'}">
+          <div class="gc-drag-block-inline" @touchstart="handler.dragEvent">
+            <arrows-icon />
+          </div>
         </div>
       </div>
     </div>
