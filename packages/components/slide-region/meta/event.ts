@@ -10,5 +10,5 @@ export interface SlideRegionEvent {
   move?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (point: SlideRegionPoint, clear:(fn: Function) => void) => void;
+  confirm?: (point: SlideRegionPoint, reset:() => void) => void;
 }

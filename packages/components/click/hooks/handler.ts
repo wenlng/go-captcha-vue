@@ -4,7 +4,7 @@ import {reactive, toRaw} from "vue";
 import {getDomXY} from "@/helper/helper";
 
 export function useHandler(
-  _data: ClickData,
+  data: ClickData,
   event: ClickEvent,
 ) {
   const dots = reactive<{list: Array<ClickDot>}>({list: []})
@@ -26,9 +26,7 @@ export function useHandler(
     const yy = parseInt(yPos.toString())
     const date = new Date()
     const index = dots.list.length
-    const list = dots.list
-    list.push({key: date.getTime(), index: index + 1, x: xx, y: yy})
-    dots.list = list
+    dots.list.push({key: date.getTime(), index: index + 1, x: xx, y: yy})
 
     event.click && event.click(xx, yy)
     e.cancelBubble = true
@@ -38,7 +36,7 @@ export function useHandler(
 
   const confirmEvent = (e: Event|any) => {
     event.confirm && event.confirm(toRaw(dots.list), () => {
-      dots.list = []
+      resetData()
     })
     e.cancelBubble = true
     e.preventDefault()
@@ -47,7 +45,7 @@ export function useHandler(
 
   const closeEvent = (e: Event|any) => {
     event.close && event.close()
-    dots.list = []
+    resetData()
     e.cancelBubble = true
     e.preventDefault()
     return false
@@ -55,10 +53,20 @@ export function useHandler(
 
   const refreshEvent = (e: Event|any) => {
     event.refresh && event.refresh()
-    dots.list = []
+    resetData()
     e.cancelBubble = true
     e.preventDefault()
     return false
+  }
+
+  const resetData = () => {
+    dots.list = []
+  }
+
+  const clearData = () => {
+    resetData()
+    data.thumb = ''
+    data.image = ''
   }
 
   return {
@@ -67,5 +75,7 @@ export function useHandler(
     confirmEvent,
     closeEvent,
     refreshEvent,
+    resetData,
+    clearData,
   }
 }

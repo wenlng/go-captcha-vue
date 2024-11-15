@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, defineEmits, ref, toRefs, watch} from "vue"
+import {computed, defineEmits, reactive, ref, toRaw, toRefs, watch} from "vue"
 import BtnDefaultIcon from "../../assets/icons/btn-default-icon.vue";
 import BtnWarnIcon from "../../assets/icons/btn-warn-icon.vue";
 import BtnErrorIcon from "../../assets/icons/btn-error-icon.vue";
@@ -23,6 +23,7 @@ import BtnSuccessIcon from "../../assets/icons/btn-success-icon.vue";
 
 import {ButtonConfig, defaultConfig} from "./meta/config";
 import {ButtonType} from "@/components/button/meta/types";
+import {ClickConfig} from "@/components/click/meta/config";
 
 // @ts-ignore
 const props = withDefaults(
@@ -41,18 +42,12 @@ const props = withDefaults(
     },
 )
 
-const { type, title, disabled } = toRefs(props);
+const { type, title, disabled, config } = toRefs(props);
+const localConfig = reactive<ClickConfig>({...defaultConfig(), ...toRaw(config)})
 
-const conf = ref({
-  ...defaultConfig(),
-  ...props.config,
-})
-watch(() => props.config, () => {
-  conf.value = {
-    ...conf.value,
-    ...props.config
-  }
-})
+watch(() => props.config, (newData, oldData) => {
+  Object.assign(localConfig, newData)
+},{ deep: true })
 
 const btnClass = computed(() => {
   const tc = `gc-${type.value}`
@@ -61,12 +56,12 @@ const btnClass = computed(() => {
 
 const btnStyle = computed(() => {
   return {
-    width:  conf.value.width + "px",
-    height: conf.value.height + "px",
-    paddingLeft: conf.value.horizontalPadding + "px",
-    paddingRight: conf.value.horizontalPadding + "px",
-    paddingTop: conf.value.verticalPadding + "px",
-    paddingBottom: conf.value.verticalPadding + "px",
+    width:  localConfig.width + "px",
+    height: localConfig.height + "px",
+    paddingLeft: localConfig.horizontalPadding + "px",
+    paddingRight: localConfig.horizontalPadding + "px",
+    paddingTop: localConfig.verticalPadding + "px",
+    paddingBottom: localConfig.verticalPadding + "px",
   }
 })
 

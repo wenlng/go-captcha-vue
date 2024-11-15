@@ -1,38 +1,39 @@
 <template>
   <div
-      :class="`go-captcha gc-wrapper ${config.showTheme ? 'gc-theme' : ''}`"
+      :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
       :style="wrapperStyles"
+      v-show="hasDisplayWrapperState"
   >
     <div class="gc-header">
-      <span>{{ config.title }}</span>
-      <img v-show="data.thumb !== ''" :style="thumbStyles" :src="data.thumb" alt="..." />
+      <span>{{ localConfig.title }}</span>
+      <img v-show="hasDisplayImageState" :style="thumbStyles" :src="localData.thumb" alt="" />
     </div>
     <div class="gc-body" :style="imageStyles">
       <div class="gc-loading">
         <loading-icon />
       </div>
-      <img :style="imageStyles" v-show="data.image !== ''" class="gc-picture" :src="data.image" alt="..." @click="handler.clickEvent"/>
+      <img :style="imageStyles" v-show="hasDisplayImageState" class="gc-picture" :src="localData.image" alt="" @click="handler.clickEvent"/>
       <div class="gc-dots">
-        <div class="gc-dot" v-for="dot in dots.list" :key="`${dot.key + '-' + dot.index}`" :style="{
-          top: (dot.y - 11) + 'px',
-          left: (dot.x - 11) + 'px',
+        <div class="gc-dot" v-for="dot in handler.dots.list" :key="`${dot.key + '-' + dot.index}`" :style="{
+          top: (dot.y - (localConfig.dotSize/2)-1) + 'px',
+          left: (dot.x - (localConfig.dotSize/2)-1) + 'px',
         }">{{dot.index}}</div>
       </div>
     </div>
     <div class="gc-footer">
       <div class="gc-icon-block gc-icon-block2">
-        <close-icon :width="22" :height="22" @click="handler.closeEvent"/>
-        <refresh-icon :width="22" :height="22" @click="handler.refreshEvent"/>
+        <close-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.closeEvent"/>
+        <refresh-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.refreshEvent"/>
       </div>
       <div class="gc-button-block">
-        <button @click="handler.confirmEvent">{{ config.buttonText }}</button>
+        <button :class="!hasDisplayImageState && 'disabled'" @click="handler.confirmEvent">{{ localConfig.buttonText }}</button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {computed, ref, watch} from "vue"
+import {computed, reactive, toRaw, watch} from "vue"
 import {ClickConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
@@ -57,26 +58,30 @@ const props = withDefaults(
     },
 )
 
-const { data, events } = props;
-const config = ref({
-  ...defaultConfig(),
-  ...props.config,
-})
-watch(() => props.config, () => {
-  config.value = {
-    ...config.value,
-    ...props.config
-  }
-})
+const { data, events, config } = props;
+const localData = reactive<ClickData>({...toRaw(data)})
+const localEvent = reactive<ClickEvent>({...toRaw(events)})
+const localConfig = reactive<ClickConfig>({...defaultConfig(), ...toRaw(config)})
 
-const handler = useHandler(data, events);
+watch(() => props.data, (newData, oldData) => {
+  Object.assign(localData, newData)
+},{ deep: true });
 
-const hPadding = config.value.horizontalPadding || 0
-const vPadding = config.value.verticalPadding || 0
-const width = (config.value.width || 0) + ( hPadding * 2) + (config.value.showTheme ? 2 : 0)
-const dots = handler.dots
+watch(() => props.events, (newData, oldData) => {
+  Object.assign(localEvent, newData)
+},{ deep: true })
+
+watch(() => props.config, (newData, oldData) => {
+  Object.assign(localConfig, newData)
+},{ deep: true })
+
+const handler = useHandler(localData, localEvent);
 
 const wrapperStyles = computed(() => {
+  const hPadding = localConfig.horizontalPadding || 0
+  const vPadding = localConfig.verticalPadding || 0
+  const width = (localConfig.width || 0) + ( hPadding * 2) + (localConfig.showTheme ? 2 : 0)
+
   return {
     width:  width+ "px",
     paddingLeft: hPadding + "px",
@@ -88,17 +93,37 @@ const wrapperStyles = computed(() => {
 
 const thumbStyles = computed(() => {
   return {
-    width: config.value.thumbWidth + "px",
-    height: config.value.thumbHeight + "px",
+    width: localConfig.thumbWidth + "px",
+    height: localConfig.thumbHeight + "px",
   }
 })
 
 const imageStyles = computed(() => {
   return {
-    width: config.value.width + "px",
-    height: config.value.height + "px"
+    width: localConfig.width + "px",
+    height: localConfig.height + "px"
   }
 })
+
+const hasDisplayImageState = computed(() => {
+  return localData.image != '' && localData.thumb != ''
+})
+
+const hasDisplayWrapperState = computed(() => {
+  return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
+})
+
+defineExpose<{
+  reset: Function,
+  clear: Function,
+  refresh: Function,
+  close: Function,
+}>({
+  reset: handler.resetData,
+  clear: handler.clearData,
+  refresh: handler.refreshEvent,
+  close: handler.closeEvent,
+});
 </script>
 
 <style lang="less">
@@ -116,11 +141,11 @@ const imageStyles = computed(() => {
     .gc-dot {
       position: absolute;
       z-index: 2;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       color: #cedffe;
       background: #3e7cff;
-      border: 2px solid #f7f9fb;
+      border: 3px solid #f7f9fb;
       display:-webkit-box;
       display:-webkit-flex;
       display:-ms-flexbox;

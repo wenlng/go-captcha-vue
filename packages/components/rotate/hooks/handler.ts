@@ -1,20 +1,24 @@
 import {RotateData} from "../meta/data";
 import {RotateEvent} from "../meta/event";
-import {reactive, Ref} from "vue";
+import {reactive, Ref, watch} from "vue";
 import {checkTargetFather} from "@/helper/helper";
+import {SlideConfig} from "@/components/slide/meta/config";
 
 export function useHandler(
   data: RotateData,
   event: RotateEvent,
+  config: SlideConfig,
+  rootRef: Ref,
   dragBlockRef: Ref,
   dragBarRef: Ref,
 ) {
-  const state = reactive<{dragLeft: number, thumbAngle: number}>({dragLeft: 0, thumbAngle: data.angle || 0})
+  const state = reactive<{dragLeft: number, thumbAngle: number, isFreeze: boolean}>({dragLeft: 0, thumbAngle: data.angle || 0, isFreeze: false})
 
-  const clear = () => {
-    state.dragLeft = 0
-    state.thumbAngle = 0
-  }
+  watch(() => data, (newData, _) => {
+    if(!state.isFreeze){
+      state.thumbAngle = newData.angle || 0
+    }
+  },{ deep: true })
 
   const dragEvent = (e: Event|any) => {
     const touch = e.touches && e.touches[0];
@@ -23,12 +27,14 @@ export function useHandler(
     const width = dragBarRef.value.offsetWidth
     const blockWidth = dragBlockRef.value.offsetWidth
     const maxWidth = width - blockWidth
-    const p = 360 / maxWidth
+    const maxAngle = 360
+    const p = (maxAngle - data.angle) / maxWidth
 
     let angle = 0
     let isMoving = false
     let tmpLeaveDragEvent: Event|any = null
     let startX = 0;
+    let currentAngle = 0
     if (touch) {
       startX = touch.pageX - offsetLeft
     } else {
@@ -45,20 +51,22 @@ export function useHandler(
       } else {
         left = e.clientX - startX
       }
+      angle = data.angle + (left * p)
 
       if (left >= maxWidth) {
         state.dragLeft = maxWidth
+        state.thumbAngle = currentAngle = maxAngle
         return
       }
 
       if (left <= 0) {
         state.dragLeft = 0
+        state.thumbAngle = currentAngle = data.angle
         return
       }
 
       state.dragLeft = left
-      angle = (left * p)
-      state.thumbAngle = angle
+      state.thumbAngle = currentAngle = angle
 
       event.rotate && event.rotate(angle)
 
@@ -77,9 +85,13 @@ export function useHandler(
 
       clearEvent()
 
+      if (currentAngle <= 0) {
+        return
+      }
+
       isMoving = false
-      event.confirm && event.confirm(parseInt(angle.toString()), () => {
-        clear()
+      event.confirm && event.confirm(parseInt(currentAngle.toString()), () => {
+        resetData()
       })
 
       e.cancelBubble = true
@@ -103,35 +115,44 @@ export function useHandler(
       clearEvent()
     }
 
+    const scope = config.scope
+    const dragDom = scope ? rootRef.value : dragBarRef.value
+    const scopeDom = scope ? rootRef.value : document.body
+
     const clearEvent = () => {
-      dragBarRef.value.removeEventListener("mousemove", moveEvent, false)
-      dragBarRef.value.removeEventListener("touchmove", moveEvent, { passive: false })
+      scopeDom.removeEventListener("mousemove", moveEvent, false)
+      scopeDom.removeEventListener("touchmove", moveEvent, { passive: false })
 
-      dragBarRef.value.removeEventListener( "mouseup", upEvent, false)
+      dragDom.removeEventListener( "mouseup", upEvent, false)
       // dragBarRef.value.removeEventListener( "mouseout", upEvent, false)
-      dragBarRef.value.removeEventListener( "mouseenter", enterDragBlockEvent, false)
-      dragBarRef.value.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
-      dragBarRef.value.removeEventListener("touchend", upEvent, false)
+      dragDom.removeEventListener( "mouseenter", enterDragBlockEvent, false)
+      dragDom.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
+      dragDom.removeEventListener("touchend", upEvent, false)
 
-      document.body.removeEventListener("mouseleave", upEvent, false)
-      document.body.removeEventListener("mouseup", leaveUpEvent, false)
+      scopeDom.removeEventListener("mouseleave", upEvent, false)
+      scopeDom.removeEventListener("mouseup", leaveUpEvent, false)
+
+      state.isFreeze = false
     }
 
-    dragBarRef.value.addEventListener("mousemove", moveEvent, false)
-    dragBarRef.value.addEventListener("touchmove", moveEvent, { passive: false })
-    dragBarRef.value.addEventListener( "mouseup", upEvent, false)
-    // dragBarRef.value.addEventListener( "mouseout", upEvent, false)
-    dragBarRef.value.addEventListener( "mouseenter", enterDragBlockEvent, false)
-    dragBarRef.value.addEventListener( "mouseleave", leaveDragBlockEvent, false)
-    dragBarRef.value.addEventListener("touchend", upEvent, false)
+    state.isFreeze = true
 
-    document.body.addEventListener("mouseleave", upEvent, false)
-    document.body.addEventListener("mouseup", leaveUpEvent, false)
+    scopeDom.addEventListener("mousemove", moveEvent, false)
+    scopeDom.addEventListener("touchmove", moveEvent, { passive: false })
+
+    dragDom.addEventListener( "mouseup", upEvent, false)
+    // dragBarRef.value.addEventListener( "mouseout", upEvent, false)
+    dragDom.addEventListener( "mouseenter", enterDragBlockEvent, false)
+    dragDom.addEventListener( "mouseleave", leaveDragBlockEvent, false)
+    dragDom.addEventListener("touchend", upEvent, false)
+
+    scopeDom.addEventListener("mouseleave", upEvent, false)
+    scopeDom.addEventListener("mouseup", leaveUpEvent, false)
   }
 
   const closeEvent = (e: Event|any) => {
     event && event.close && event.close()
-    clear()
+    resetData()
     e.cancelBubble = true
     e.preventDefault()
     return false
@@ -139,10 +160,22 @@ export function useHandler(
 
   const refreshEvent = (e: Event|any) => {
     event && event.refresh && event.refresh()
-    clear()
+    resetData()
     e.cancelBubble = true
     e.preventDefault()
     return false
+  }
+
+  const resetData = () => {
+    state.dragLeft = 0
+    state.thumbAngle = data.angle
+  }
+
+  const clearData = () => {
+    data.thumb = ''
+    data.image = ''
+    data.angle = 0
+    resetData()
   }
 
   return {
@@ -150,5 +183,7 @@ export function useHandler(
     dragEvent,
     closeEvent,
     refreshEvent,
+    resetData,
+    clearData,
   }
 }

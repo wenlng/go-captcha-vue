@@ -1,31 +1,33 @@
 <template>
   <div
-      :class="`go-captcha gc-wrapper ${config.showTheme ? 'gc-theme' : ''}`"
+      :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
       :style="wrapperStyles"
+      v-show="hasDisplayWrapperState"
+      ref="rootRef"
   >
     <div class="gc-header gc-header2">
-      <span>{{ config.title }}</span>
+      <span>{{ localConfig.title }}</span>
     </div>
     <div class="gc-body" ref="containerRef" :style="imageStyles">
       <div class="gc-loading">
         <loading-icon />
       </div>
-      <img v-show="data.image !== ''" class="gc-picture" :style="imageStyles" :src="data.image" alt="..."/>
+      <img v-show="hasDisplayImageState" class="gc-picture" :style="imageStyles" :src="localData.image" alt=""/>
       <div class="gc-tile" ref="tileRef" :style="thumbStyles" @mousedown="handler.dragEvent" @touchstart="handler.dragEvent">
-        <img v-show="data.thumb !== ''" :src="data.thumb" alt="..."/>
+        <img v-show="hasDisplayThumbImageState" :src="localData.thumb" alt=""/>
       </div>
     </div>
     <div class="gc-footer">
       <div class="gc-icon-block">
-        <close-icon :width="22" :height="22" @click="handler.closeEvent"/>
-        <refresh-icon :width="22" :height="22" @click="handler.refreshEvent"/>
+        <close-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.closeEvent"/>
+        <refresh-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.refreshEvent"/>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {computed, nextTick, onMounted, ref, watch} from "vue"
+import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
 import {SlideRegionConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
@@ -50,28 +52,34 @@ const props = withDefaults(
     },
 )
 
-const { data, events } = props;
-const config = ref({
-  ...defaultConfig(),
-  ...props.config,
-})
-watch(() => props.config, () => {
-  config.value = {
-    ...config.value,
-    ...props.config
-  }
-})
+const { data, events, config } = props;
+const localData = reactive<SlideRegionData>({...toRaw(data)})
+const localEvent = reactive<SlideRegionEvent>({...toRaw(events)})
+const localConfig = reactive<SlideRegionConfig>({...defaultConfig(), ...toRaw(config)})
 
+watch(() => props.data, (newData, oldData) => {
+  Object.assign(localData, newData)
+},{ deep: true });
+
+watch(() => props.events, (newData, oldData) => {
+  Object.assign(localEvent, newData)
+},{ deep: true })
+
+watch(() => props.config, (newData, oldData) => {
+  Object.assign(localConfig, newData)
+},{ deep: true })
+
+const rootRef = ref<any>(null)
 const containerRef = ref<any>(null)
 const tileRef = ref<any>(null)
 
-const handler = useHandler(data, events, containerRef, tileRef);
-
-const hPadding = config.value.horizontalPadding || 0
-const vPadding = config.value.verticalPadding || 0
-let width = (config.value.width || 0) + ( hPadding * 2) + (config.value.showTheme ? 2 : 0)
+const handler = useHandler(localData, localEvent, localConfig, rootRef, containerRef, tileRef);
 
 const wrapperStyles = computed(() => {
+  const hPadding = localConfig.horizontalPadding || 0
+  const vPadding = localConfig.verticalPadding || 0
+  let width = (localConfig.width || 0) + ( hPadding * 2) + (localConfig.showTheme ? 2 : 0)
+
   return {
     width:  width+ "px",
     paddingLeft: hPadding + "px",
@@ -83,8 +91,8 @@ const wrapperStyles = computed(() => {
 
 const thumbStyles = computed(() => {
   return {
-    width: data.thumbWidth + "px",
-    height: data.thumbHeight + "px",
+    width: localData.thumbWidth + "px",
+    height: localData.thumbHeight + "px",
     top: handler.state.y + "px",
     left: handler.state.x + "px"
   }
@@ -92,9 +100,21 @@ const thumbStyles = computed(() => {
 
 const imageStyles = computed(() => {
   return {
-    width: config.value.width + "px",
-    height: config.value.height + "px"
+    width: localConfig.width + "px",
+    height: localConfig.height + "px"
   }
+})
+
+const hasDisplayImageState = computed(() => {
+  return localData.image != ''
+})
+
+const hasDisplayThumbImageState = computed(() => {
+  return localData.thumb != ''
+})
+
+const hasDisplayWrapperState = computed(() => {
+  return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
 })
 
 onMounted(async () => {
@@ -103,6 +123,19 @@ onMounted(async () => {
     tileRef.value.addEventListener('dragstart', (event: any) => event.preventDefault());
   }
 });
+
+defineExpose<{
+  reset: Function,
+  clear: Function,
+  refresh: Function,
+  close: Function,
+}>({
+  reset: handler.resetData,
+  clear: handler.clearData,
+  refresh: handler.refreshEvent,
+  close: handler.closeEvent,
+});
+
 </script>
 
 <style lang="less">
