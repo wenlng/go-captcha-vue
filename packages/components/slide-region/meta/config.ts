@@ -11,6 +11,8 @@ export interface SlideRegionConfig {
   horizontalPadding?: number;
   showTheme?: boolean;
   title?: string;
+  iconSize?: number;
+  scope ?: boolean;
 }
 
 export const defaultConfig = ():SlideRegionConfig => ({
@@ -20,4 +22,6 @@ export const defaultConfig = ():SlideRegionConfig => ({
   horizontalPadding: 12,
   showTheme: true,
   title: "请拖拽贴图完成拼图",
+  iconSize: 22,
+  scope: true,
 })

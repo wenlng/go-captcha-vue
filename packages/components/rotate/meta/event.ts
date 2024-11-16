@@ -8,5 +8,5 @@ export interface RotateEvent {
   rotate?: (angle: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (angle: number, clear:(fn: Function) => void) => void;
+  confirm?: (angle: number, reset:() => void) => void;
 }

@@ -10,5 +10,5 @@ export interface SlideEvent {
   move?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (point: SlidePoint, clear:(fn: Function) => void) => void;
+  confirm?: (point: SlidePoint, reset:() => void) => void;
 }

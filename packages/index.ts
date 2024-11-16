@@ -7,11 +7,19 @@ import Button from "./components/button/index"
 
 export { Click, Slide, SlideRegion, Rotate, Button };
 
-const INSTALL_TAG = 'go_captcha_installed'
-const install = (app: any) => {
-  if (app[INSTALL_TAG]) return
-  app[INSTALL_TAG] = true
-  ;[Click, Slide, SlideRegion, Rotate, Button].map(c => app.use(c))
+const installed = {
+  install(vue: any) {
+    // @ts-ignore
+    Click.install(vue)
+    // @ts-ignore
+    Slide.install(vue)
+    // @ts-ignore
+    SlideRegion.install(vue)
+    // @ts-ignore
+    Rotate.install(vue)
+    // @ts-ignore
+    Button.install(vue)
+  }
 }
 
-export default install
+export default installed

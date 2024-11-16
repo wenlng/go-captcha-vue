@@ -8,6 +8,7 @@
   --go-captcha-theme-text-color: #333333;
   --go-captcha-theme-bg-color: #ffffff;
   --go-captcha-theme-btn-color: #ffffff;
+  --go-captcha-theme-btn-disabled-color: #749ff9;
   --go-captcha-theme-btn-bg-color: #4e87ff;
   --go-captcha-theme-btn-border-color: #4e87ff;
   --go-captcha-theme-active-color: #3e7cff;
@@ -130,6 +131,9 @@
     margin-top: -34px;
     line-height: 68px;
     text-align: center;
+    display: flex;
+    align-content: center;
+    justify-content: center;
 
     svg, circle {
       color: var(--go-captcha-theme-loading-icon-color);
@@ -205,6 +209,11 @@
       font-weight: 500;
       -moz-user-select: none;
       -webkit-user-select: none;
+
+      &.disabled {
+        pointer-events: none;
+        background-color: var(--go-captcha-theme-btn-disabled-color);
+      }
     }
   }
 
@@ -258,9 +267,14 @@
 
     color: var(--go-captcha-theme-drag-icon-color);
     fill: var(--go-captcha-theme-drag-icon-color);
+
+    &.disabled {
+      pointer-events: none;
+      background-color: var(--go-captcha-theme-btn-disabled-color);
+    }
   }
 
-  .drag-block-inline {
+  .gc-drag-block-inline {
     width: 100%;
     height: 100%;
     display: flex;

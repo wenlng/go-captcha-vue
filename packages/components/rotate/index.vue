@@ -1,35 +1,39 @@
 <template>
   <div
-      :class="`go-captcha gc-wrapper ${config.showTheme ? 'gc-theme' : ''}`"
+      :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
       :style="wrapperStyles"
+      v-show="hasDisplayWrapperState"
+      ref="rootRef"
   >
     <div class="gc-header">
-      <span>{{ config.title }}</span>
+      <span>{{ localConfig.title }}</span>
       <div class="gc-icon-block">
-        <close-icon :width="22" :height="22" @click="handler.closeEvent"/>
-        <refresh-icon :width="22" :height="22" @click="handler.refreshEvent"/>
+        <close-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.closeEvent"/>
+        <refresh-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.refreshEvent"/>
       </div>
     </div>
-    <div class="gc-body gc-rotate-body" ref="containerRef" :style="imageStyles">
-      <div class="gc-loading">
-        <loading-icon />
-      </div>
-      <div class="gc-picture gc-rotate-picture" :style="imageStyles">
-        <img v-show="data.image !== ''" :src="data.image" alt="..." />
-        <div class="gc-round" />
-      </div>
+    <div class="gc-body gc-rotate-body" ref="containerRef" :style="imageBlockStyles">
+      <div :style="imageStyles">
+        <div class="gc-loading">
+          <loading-icon />
+        </div>
+        <div class="gc-picture gc-rotate-picture" :style="imageStyles">
+          <img v-show="hasDisplayImageState" :src="localData.image" alt="" />
+          <div class="gc-round" />
+        </div>
 
-      <div class="gc-thumb gc-rotate-thumb">
-        <div class="gc-rotate-thumb-block" :style="thumbStyles">
-          <img v-show="data.thumb !== ''" :src="data.thumb" alt="..." />
+        <div class="gc-thumb gc-rotate-thumb">
+          <div class="gc-rotate-thumb-block" :style="thumbStyles">
+            <img v-show="hasDisplayThumbImageState" :src="localData.thumb" alt="" />
+          </div>
         </div>
       </div>
     </div>
     <div class="gc-footer">
       <div class="gc-drag-slide-bar" ref="dragBarRef">
         <div class="gc-drag-line" />
-        <div class="gc-drag-block" ref="dragBlockRef" @mousedown="handler.dragEvent" :style="{left: handler.state.dragLeft + 'px'}">
-          <div class="drag-block-inline" @touchstart="handler.dragEvent">
+        <div class="gc-drag-block" ref="dragBlockRef" :class="!hasDisplayImageState && 'disabled'" @mousedown="handler.dragEvent" :style="{left: handler.state.dragLeft + 'px'}">
+          <div class="gc-drag-block-inline" @touchstart="handler.dragEvent">
             <arrows-icon />
           </div>
         </div>
@@ -39,16 +43,17 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, nextTick, onMounted, ref, watch} from "vue"
-import {RotateConfig, defaultConfig} from "./meta/config";
+import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
 import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 import ArrowsIcon from "../../assets/icons/arrows-icon.vue";
 
+import {RotateConfig, defaultConfig} from "./meta/config";
 import {RotateData} from "./meta/data";
 import {RotateEvent} from "./meta/event";
+import {RotateExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
 
 // @ts-ignore
@@ -65,27 +70,33 @@ const props = withDefaults(
     },
 )
 
-const { data, events } = props;
-const config = ref({
-  ...defaultConfig(),
-  ...props.config,
-})
-watch(() => props.config, () => {
-  config.value = {
-    ...config.value,
-    ...props.config
-  }
-})
+const { data, events, config } = props;
+const localData = reactive<RotateData>({...toRaw(data)})
+const localEvent = reactive<RotateEvent>({...toRaw(events)})
+const localConfig = reactive<RotateConfig>({...defaultConfig(), ...toRaw(config)})
 
+watch(() => props.data, (newData, _) => {
+  Object.assign(localData, newData)
+},{ deep: true });
+
+watch(() => props.events, (newData, _) => {
+  Object.assign(localEvent, newData)
+},{ deep: true })
+
+watch(() => props.config, (newData, _) => {
+  Object.assign(localConfig, newData)
+},{ deep: true })
+
+const rootRef = ref<any>(null)
 const dragBarRef = ref<any>(null)
 const dragBlockRef = ref<any>(null)
 
-const handler = useHandler(data, events, dragBlockRef, dragBarRef);
+const handler = useHandler(localData, localEvent, localConfig, rootRef, dragBlockRef, dragBarRef);
 
 const wrapperStyles = computed(() => {
-  const hPadding = config.value.horizontalPadding || 0
-  const vPadding = config.value.verticalPadding || 0
-  const width = (config.value.width || 0) + ( hPadding * 2) + (config.value.showTheme ? 2 : 0)
+  const hPadding = localConfig.horizontalPadding || 0
+  const vPadding = localConfig.verticalPadding || 0
+  const width = (localConfig.width || 0) + ( hPadding * 2) + (localConfig.showTheme ? 2 : 0)
 
   return {
     width:  width+ "px",
@@ -102,12 +113,31 @@ const thumbStyles = computed(() => {
   }
 })
 
+const imageBlockStyles = computed(() => {
+  return {
+    width: localConfig.width + "px",
+    height: localConfig.height + "px"
+  }
+})
+
 const imageStyles = computed(() => {
-  const size = (config.value?.size || 0) > 0 ? config.value.size : defaultConfig().size
+  const size = (localConfig.size || 0) > 0 ? localConfig.size : defaultConfig().size
   return {
     width: size  + "px",
     height: size + "px"
   }
+})
+
+const hasDisplayImageState = computed(() => {
+  return localData.image != ''
+})
+
+const hasDisplayThumbImageState = computed(() => {
+  return localData.thumb != ''
+})
+
+const hasDisplayWrapperState = computed(() => {
+  return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
 })
 
 onMounted(async () => {
@@ -115,6 +145,13 @@ onMounted(async () => {
   if (dragBlockRef.value) {
     dragBlockRef.value.addEventListener('dragstart', (event: any) => event.preventDefault());
   }
+});
+
+defineExpose<RotateExpose>({
+  reset: handler.resetData,
+  clear: handler.clearData,
+  refresh: handler.refreshEvent,
+  close: handler.closeEvent,
 });
 </script>
 

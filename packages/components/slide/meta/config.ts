@@ -13,6 +13,8 @@ export interface SlideConfig {
   horizontalPadding?: number;
   showTheme?: boolean;
   title?: string;
+  iconSize?: number;
+  scope ?: boolean;
 }
 
 export const defaultConfig = ():SlideConfig => ({
@@ -24,5 +26,7 @@ export const defaultConfig = ():SlideConfig => ({
   horizontalPadding: 12,
   showTheme: true,
   title: "请拖动滑块完成拼图",
+  iconSize: 22,
+  scope: true,
 })
 

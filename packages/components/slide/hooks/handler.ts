@@ -1,34 +1,38 @@
 import {SlideData} from "../meta/data";
 import {SlideEvent} from "../meta/event";
-import {reactive, Ref} from "vue";
+import {SlideConfig} from "../meta/config";
+import {reactive, Ref, watch} from "vue";
 import {checkTargetFather} from "@/helper/helper";
 
 export function useHandler(
   data: SlideData,
   event: SlideEvent,
+  config: SlideConfig,
+  rootRef: Ref,
   containerRef: Ref,
   tileRef: Ref,
   dragBlockRef: Ref,
   dragBarRef: Ref,
 ) {
-  const state = reactive<{dragLeft: number, thumbLeft: number}>({dragLeft: 0, thumbLeft: data.thumbX || 0})
+  const state = reactive<{dragLeft: number, thumbLeft: number, isFreeze: boolean}>({dragLeft: 0, thumbLeft: data.thumbX || 0, isFreeze: false})
 
-  const clear = () => {
-    state.dragLeft = 0
-    state.thumbLeft = 0
-  }
+  watch(() => data, (newData, _) => {
+    if(!state.isFreeze){
+      state.thumbLeft = newData.thumbX || 0
+    }
+  },{ deep: true })
 
   const dragEvent = (e: Event|any) => {
     const touch = e.touches && e.touches[0];
     const offsetLeft = dragBlockRef.value.offsetLeft
     const width = containerRef.value.offsetWidth
     const blockWidth = dragBlockRef.value.offsetWidth
-    const maxWidth =width - blockWidth
-    const thumbX = data.thumbX || 0
+    const maxWidth = width - blockWidth
 
     const tileWith  = tileRef.value.offsetWidth
-    const ad = blockWidth - tileWith
-    const ratio = ((maxWidth - thumbX) + ad) / maxWidth
+    const tileOffsetLeft = tileRef.value.offsetLeft
+    const tileMaxWith = width - (tileWith + tileOffsetLeft)
+    const ratio = tileMaxWith / maxWidth
 
     let isMoving = false
     let tmpLeaveDragEvent: Event|any = null
@@ -51,19 +55,21 @@ export function useHandler(
         left = e.clientX - startX
       }
 
+      let ctX = tileOffsetLeft + (left * ratio)
       if (left >= maxWidth) {
         state.dragLeft = maxWidth
+        state.thumbLeft = currentThumbX = maxWidth
         return
       }
 
       if (left <= 0) {
         state.dragLeft = 0
+        state.thumbLeft = currentThumbX = tileOffsetLeft
         return
       }
 
       state.dragLeft = left
-      currentThumbX = thumbX + (left * ratio)
-      state.thumbLeft = currentThumbX
+      state.thumbLeft = currentThumbX = ctX
 
       event.move && event.move(currentThumbX, data.thumbY || 0)
 
@@ -80,10 +86,15 @@ export function useHandler(
         return
       }
 
-      isMoving = false
       clearEvent()
+
+      if (currentThumbX <= 0) {
+        return
+      }
+
+      isMoving = false
       event.confirm && event.confirm({x: parseInt(currentThumbX.toString()), y: data.thumbY || 0}, () => {
-        clear()
+        resetData()
       })
 
       e.cancelBubble = true
@@ -107,35 +118,44 @@ export function useHandler(
       clearEvent()
     }
 
+    const scope = config.scope
+    const dragDom = scope ? rootRef.value : dragBarRef.value
+    const scopeDom = scope ? rootRef.value : document.body
+
     const clearEvent = () => {
-      dragBarRef.value.removeEventListener("mousemove", moveEvent, false)
-      dragBarRef.value.removeEventListener("touchmove", moveEvent, { passive: false })
+      scopeDom.removeEventListener("mousemove", moveEvent, false)
+      scopeDom.removeEventListener("touchmove", moveEvent, { passive: false })
 
-      dragBarRef.value.removeEventListener( "mouseup", upEvent, false)
+      dragDom.removeEventListener( "mouseup", upEvent, false)
       // dragBarRef.value.removeEventListener( "mouseout", upEvent, false)
-      dragBarRef.value.removeEventListener( "mouseenter", enterDragBlockEvent, false)
-      dragBarRef.value.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
-      dragBarRef.value.removeEventListener("touchend", upEvent, false)
+      dragDom.removeEventListener( "mouseenter", enterDragBlockEvent, false)
+      dragDom.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
+      dragDom.removeEventListener("touchend", upEvent, false)
 
-      document.body.removeEventListener("mouseleave", upEvent, false)
-      document.body.removeEventListener("mouseup", leaveUpEvent, false)
+      scopeDom.removeEventListener("mouseleave", upEvent, false)
+      scopeDom.removeEventListener("mouseup", leaveUpEvent, false)
+
+      state.isFreeze = false
     }
+    state.isFreeze = true
 
-    dragBarRef.value.addEventListener("mousemove", moveEvent, false)
-    dragBarRef.value.addEventListener("touchmove", moveEvent, { passive: false })
-    dragBarRef.value.addEventListener( "mouseup", upEvent, false)
+    scopeDom.addEventListener("mousemove", moveEvent, false)
+    scopeDom.addEventListener("touchmove", moveEvent, { passive: false })
+
+    dragDom.addEventListener( "mouseup", upEvent, false)
     // dragBarRef.value.addEventListener( "mouseout", upEvent, false)
-    dragBarRef.value.addEventListener( "mouseenter", enterDragBlockEvent, false)
-    dragBarRef.value.addEventListener( "mouseleave", leaveDragBlockEvent, false)
-    dragBarRef.value.addEventListener("touchend", upEvent, false)
+    dragDom.addEventListener( "mouseenter", enterDragBlockEvent, false)
+    dragDom.addEventListener( "mouseleave", leaveDragBlockEvent, false)
+    dragDom.addEventListener("touchend", upEvent, false)
 
-    document.body.addEventListener("mouseleave", upEvent, false)
-    document.body.addEventListener("mouseup", leaveUpEvent, false)
+    scopeDom.addEventListener("mouseleave", upEvent, false)
+    scopeDom.addEventListener("mouseup", leaveUpEvent, false)
+
   }
 
   const closeEvent = (e: Event|any) => {
     event && event.close && event.close()
-    clear()
+    resetData()
     e.cancelBubble = true
     e.preventDefault()
     return false
@@ -143,10 +163,25 @@ export function useHandler(
 
   const refreshEvent = (e: Event|any) => {
     event && event.refresh && event.refresh()
-    clear()
+    resetData()
     e.cancelBubble = true
     e.preventDefault()
     return false
+  }
+
+  const resetData = () => {
+    state.dragLeft = 0
+    state.thumbLeft = data.thumbX || 0
+  }
+
+  const clearData = () => {
+    data.thumb = ''
+    data.image = ''
+    data.thumbX = 0
+    data.thumbY = 0
+    data.thumbWidth = 0
+    data.thumbHeight = 0
+    resetData()
   }
 
   return {
@@ -154,5 +189,7 @@ export function useHandler(
     dragEvent,
     closeEvent,
     refreshEvent,
+    resetData,
+    clearData,
   }
 }
