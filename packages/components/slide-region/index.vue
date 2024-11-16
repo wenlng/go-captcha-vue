@@ -36,6 +36,7 @@ import LoadingIcon from "../../assets/icons/loading-icon.vue";
 
 import {SlideRegionData} from "./meta/data";
 import {SlideRegionEvent} from "./meta/event";
+import {SlideRegionExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
 
 // @ts-ignore
@@ -124,12 +125,7 @@ onMounted(async () => {
   }
 });
 
-defineExpose<{
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
-}>({
+defineExpose<SlideRegionExpose>({
   reset: handler.resetData,
   clear: handler.clearData,
   refresh: handler.refreshEvent,

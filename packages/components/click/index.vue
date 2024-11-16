@@ -42,6 +42,7 @@ import LoadingIcon from "../../assets/icons/loading-icon.vue";
 
 import {ClickData} from "./meta/data";
 import {ClickEvent} from "./meta/event";
+import {ClickExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
 
 // @ts-ignore
@@ -113,12 +114,7 @@ const hasDisplayWrapperState = computed(() => {
   return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
 })
 
-defineExpose<{
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
-}>({
+defineExpose<ClickExpose>({
   reset: handler.resetData,
   clear: handler.clearData,
   refresh: handler.refreshEvent,

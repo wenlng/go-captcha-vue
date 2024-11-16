@@ -53,6 +53,7 @@ import ArrowsIcon from "../../assets/icons/arrows-icon.vue";
 
 import {RotateData} from "./meta/data";
 import {RotateEvent} from "./meta/event";
+import {RotateExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
 
 // @ts-ignore
@@ -146,12 +147,7 @@ onMounted(async () => {
   }
 });
 
-defineExpose<{
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
-}>({
+defineExpose<RotateExpose>({
   reset: handler.resetData,
   clear: handler.clearData,
   refresh: handler.refreshEvent,

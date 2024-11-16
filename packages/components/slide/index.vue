@@ -45,6 +45,7 @@ import ArrowsIcon from "../../assets/icons/arrows-icon.vue";
 
 import {SlideData} from "./meta/data";
 import {SlideEvent} from "./meta/event";
+import {SlideExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
 
 // @ts-ignore
@@ -135,12 +136,7 @@ onMounted(async () => {
   }
 });
 
-defineExpose<{
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
-}>({
+defineExpose<SlideExpose>({
   reset: handler.resetData,
   clear: handler.clearData,
   refresh: handler.refreshEvent,
