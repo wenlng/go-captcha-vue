@@ -15,8 +15,8 @@
       <img :style="imageStyles" v-show="hasDisplayImageState" class="gc-picture" :src="localData.image" alt="" @click="handler.clickEvent"/>
       <div class="gc-dots">
         <div class="gc-dot" v-for="dot in handler.dots.list" :key="`${dot.key + '-' + dot.index}`" :style="{
-          top: (dot.y - (localConfig.dotSize/2)-1) + 'px',
-          left: (dot.x - (localConfig.dotSize/2)-1) + 'px',
+          top: (dot.y - ((localConfig.dotSize || 1)/2)-1) + 'px',
+          left: (dot.x - ((localConfig.dotSize || 1)/2)-1) + 'px',
         }">{{dot.index}}</div>
       </div>
     </div>
@@ -64,15 +64,15 @@ const localData = reactive<ClickData>({...toRaw(data)})
 const localEvent = reactive<ClickEvent>({...toRaw(events)})
 const localConfig = reactive<ClickConfig>({...defaultConfig(), ...toRaw(config)})
 
-watch(() => props.data, (newData, oldData) => {
+watch(() => props.data, (newData, _) => {
   Object.assign(localData, newData)
 },{ deep: true });
 
-watch(() => props.events, (newData, oldData) => {
+watch(() => props.events, (newData, _) => {
   Object.assign(localEvent, newData)
 },{ deep: true })
 
-watch(() => props.config, (newData, oldData) => {
+watch(() => props.config, (newData, _) => {
   Object.assign(localConfig, newData)
 },{ deep: true })
 

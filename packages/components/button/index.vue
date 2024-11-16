@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, defineEmits, reactive, ref, toRaw, toRefs, watch} from "vue"
+import {computed, defineEmits, reactive, toRaw, toRefs, watch} from "vue"
 import BtnDefaultIcon from "../../assets/icons/btn-default-icon.vue";
 import BtnWarnIcon from "../../assets/icons/btn-warn-icon.vue";
 import BtnErrorIcon from "../../assets/icons/btn-error-icon.vue";
@@ -45,7 +45,7 @@ const props = withDefaults(
 const { type, title, disabled, config } = toRefs(props);
 const localConfig = reactive<ClickConfig>({...defaultConfig(), ...toRaw(config)})
 
-watch(() => props.config, (newData, oldData) => {
+watch(() => props.config, (newData, _) => {
   Object.assign(localConfig, newData)
 },{ deep: true })
 

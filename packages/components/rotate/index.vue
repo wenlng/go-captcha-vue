@@ -75,15 +75,15 @@ const localData = reactive<RotateData>({...toRaw(data)})
 const localEvent = reactive<RotateEvent>({...toRaw(events)})
 const localConfig = reactive<RotateConfig>({...defaultConfig(), ...toRaw(config)})
 
-watch(() => props.data, (newData, oldData) => {
+watch(() => props.data, (newData, _) => {
   Object.assign(localData, newData)
 },{ deep: true });
 
-watch(() => props.events, (newData, oldData) => {
+watch(() => props.events, (newData, _) => {
   Object.assign(localEvent, newData)
 },{ deep: true })
 
-watch(() => props.config, (newData, oldData) => {
+watch(() => props.config, (newData, _) => {
   Object.assign(localConfig, newData)
 },{ deep: true })
 
