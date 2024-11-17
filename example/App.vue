@@ -124,7 +124,7 @@ const slideEvents = {
 
     setTimeout(() => {
       reset()
-    }, 10)
+    }, 100)
   },
   close(): void {
     console.log("close >>>>>>>")
@@ -176,7 +176,7 @@ const slideRegionEvents = {
 
     setTimeout(() => {
       reset()
-    }, 10)
+    }, 100)
   },
   close(): void {
     console.log("close >>>>>>>")
@@ -225,7 +225,7 @@ const rotateEvents = {
 
     setTimeout(() => {
       reset()
-    }, 10)
+    }, 100)
   },
   close(): void {
     console.log("close >>>>>>>")

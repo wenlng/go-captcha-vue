@@ -73,12 +73,12 @@ interface ClickEvents {
   confirm?: (dots: Array<ClickDot>, reset:() => void) => boolean;
 }
 
-// component call method
+// component method
 interface ClickExpose {
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }
 ```
 
@@ -108,6 +108,8 @@ interface SlideConfig {
   horizontalPadding?: number;
   showTheme?: boolean;
   title?: string;
+  iconSize?: number;
+  scope ?: boolean;
 }
 
 // data = {}
@@ -128,12 +130,12 @@ interface SlideEvents {
   confirm?: (point: SlidePoint, reset:() => void) => boolean;
 }
 
-// component call method
+// component method
 interface SlideExpose {
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }
 ```
 ```ts
@@ -147,6 +149,8 @@ interface SlideRegionConfig {
   horizontalPadding?: number;
   showTheme?: boolean;
   title?: string;
+  iconSize?: number;
+  scope ?: boolean;
 }
 
 // data = {}
@@ -168,12 +172,12 @@ interface SlideRegionEvents {
 }
 
 
-// component call method
+// component method
 interface SlideRegionExpose {
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }
 ```
 
@@ -198,6 +202,8 @@ interface RotateConfig {
   horizontalPadding?: number;
   showTheme?: boolean;
   title?: string;
+  iconSize?: number;
+  scope ?: boolean;
 }
 
 // data = {}
@@ -215,13 +221,12 @@ interface RotateEvents {
   confirm?: (angle: number, reset:() => void) => boolean;
 }
 
-
-// component call method
+// component method
 interface RotateExpose {
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }
 ```
 

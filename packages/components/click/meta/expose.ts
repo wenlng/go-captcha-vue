@@ -5,8 +5,8 @@
  **/
 
 export interface ClickExpose {
-  reset: Function,
-  clear: Function,
-  refresh: Function,
-  close: Function,
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }

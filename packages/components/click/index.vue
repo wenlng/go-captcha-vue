@@ -1,32 +1,63 @@
 <template>
   <div
-      :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
-      :style="wrapperStyles"
-      v-show="hasDisplayWrapperState"
+    :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
+    :style="wrapperStyles"
+    v-show="hasDisplayWrapperState"
   >
     <div class="gc-header">
       <span>{{ localConfig.title }}</span>
-      <img v-show="hasDisplayImageState" :style="thumbStyles" :src="localData.thumb" alt="" />
+      <img
+        v-show="hasDisplayImageState"
+        :style="thumbStyles"
+        :src="localData.thumb"
+        alt=""
+      />
     </div>
     <div class="gc-body" :style="imageStyles">
       <div class="gc-loading">
         <loading-icon />
       </div>
-      <img :style="imageStyles" v-show="hasDisplayImageState" class="gc-picture" :src="localData.image" alt="" @click="handler.clickEvent"/>
+      <img
+        :style="imageStyles"
+        v-show="hasDisplayImageState"
+        class="gc-picture"
+        :src="localData.image"
+        @click="handler.clickEvent"
+        alt=""
+      />
       <div class="gc-dots">
-        <div class="gc-dot" v-for="dot in handler.dots.list" :key="`${dot.key + '-' + dot.index}`" :style="{
-          top: (dot.y - ((localConfig.dotSize || 1)/2)-1) + 'px',
-          left: (dot.x - ((localConfig.dotSize || 1)/2)-1) + 'px',
-        }">{{dot.index}}</div>
+        <div
+          class="gc-dot"
+          v-for="dot in handler.dots.list"
+          :key="`${dot.key + '-' + dot.index}`"
+          :style="{
+            width: localConfig.dotSize + 'px',
+            height: localConfig.dotSize + 'px',
+            borderRadius: localConfig.dotSize + 'px',
+            top: (dot.y - ((localConfig.dotSize || 1)/2)-1) + 'px',
+            left: (dot.x - ((localConfig.dotSize || 1)/2)-1) + 'px',
+          }"
+        >{{dot.index}}</div>
       </div>
     </div>
     <div class="gc-footer">
       <div class="gc-icon-block gc-icon-block2">
-        <close-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.closeEvent"/>
-        <refresh-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.refreshEvent"/>
+        <close-icon
+          :width="localConfig.iconSize"
+          :height="localConfig.iconSize"
+          @click="handler.closeEvent"
+        />
+        <refresh-icon
+          :width="localConfig.iconSize"
+          :height="localConfig.iconSize"
+          @click="handler.refreshEvent"
+        />
       </div>
       <div class="gc-button-block">
-        <button :class="!hasDisplayImageState && 'disabled'" @click="handler.confirmEvent">{{ localConfig.buttonText }}</button>
+        <button
+          :class="!hasDisplayImageState && 'disabled'"
+          @click="handler.confirmEvent"
+        >{{ localConfig.buttonText }}</button>
       </div>
     </div>
   </div>
@@ -51,6 +82,7 @@ const props = withDefaults(
       config?: ClickConfig;
       events?: ClickEvent,
       data: ClickData,
+      [x: string]: any,
     }>(),
     {
       config: defaultConfig,
@@ -76,7 +108,10 @@ watch(() => props.config, (newData, _) => {
   Object.assign(localConfig, newData)
 },{ deep: true })
 
-const handler = useHandler(localData, localEvent);
+const handler = useHandler(localData, localEvent, () => {
+  localData.thumb = ''
+  localData.image = ''
+});
 
 const wrapperStyles = computed(() => {
   const hPadding = localConfig.horizontalPadding || 0
@@ -107,7 +142,7 @@ const imageStyles = computed(() => {
 })
 
 const hasDisplayImageState = computed(() => {
-  return localData.image != '' && localData.thumb != ''
+  return localData.image != '' || localData.thumb != ''
 })
 
 const hasDisplayWrapperState = computed(() => {
@@ -117,8 +152,8 @@ const hasDisplayWrapperState = computed(() => {
 defineExpose<ClickExpose>({
   reset: handler.resetData,
   clear: handler.clearData,
-  refresh: handler.refreshEvent,
-  close: handler.closeEvent,
+  refresh: handler.refresh,
+  close: handler.close,
 });
 </script>
 
@@ -151,7 +186,7 @@ defineExpose<ClickExpose>({
       -ms-flex-align:center;
       align-items: center;
       justify-content: center;
-      border-radius: 20px;
+      border-radius: 22px;
       cursor: default;
     }
   }

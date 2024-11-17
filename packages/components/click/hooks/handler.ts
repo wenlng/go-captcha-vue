@@ -4,8 +4,9 @@ import {reactive, toRaw} from "vue";
 import {getDomXY} from "@/helper/helper";
 
 export function useHandler(
-  data: ClickData,
+  _: ClickData,
   event: ClickEvent,
+  clearCbs: () => void
 ) {
   const dots = reactive<{list: Array<ClickDot>}>({list: []})
 
@@ -44,19 +45,27 @@ export function useHandler(
   }
 
   const closeEvent = (e: Event|any) => {
-    event.close && event.close()
-    resetData()
+    close()
     e.cancelBubble = true
     e.preventDefault()
     return false
   }
 
   const refreshEvent = (e: Event|any) => {
-    event.refresh && event.refresh()
-    resetData()
+    refresh()
     e.cancelBubble = true
     e.preventDefault()
     return false
+  }
+
+  const close = () => {
+    event.close && event.close()
+    resetData()
+  }
+
+  const refresh = () => {
+    event.refresh && event.refresh()
+    resetData()
   }
 
   const resetData = () => {
@@ -65,8 +74,7 @@ export function useHandler(
 
   const clearData = () => {
     resetData()
-    data.thumb = ''
-    data.image = ''
+    clearCbs && clearCbs()
   }
 
   return {
@@ -77,5 +85,7 @@ export function useHandler(
     refreshEvent,
     resetData,
     clearData,
+    refresh,
+    close,
   }
 }
