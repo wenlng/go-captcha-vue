@@ -1,26 +1,54 @@
 <template>
   <div
-      :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
-      :style="wrapperStyles"
-      v-show="hasDisplayWrapperState"
-      ref="rootRef"
+    :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
+    :style="wrapperStyles"
+    v-show="hasDisplayWrapperState"
+    ref="rootRef"
   >
     <div class="gc-header gc-header2">
       <span>{{ localConfig.title }}</span>
     </div>
-    <div class="gc-body" ref="containerRef" :style="imageStyles">
+    <div
+      class="gc-body"
+      ref="containerRef"
+      :style="imageStyles"
+    >
       <div class="gc-loading">
         <loading-icon />
       </div>
-      <img v-show="hasDisplayImageState" class="gc-picture" :style="imageStyles" :src="localData.image" alt=""/>
-      <div class="gc-tile" ref="tileRef" :style="thumbStyles" @mousedown="handler.dragEvent" @touchstart="handler.dragEvent">
-        <img v-show="hasDisplayThumbImageState" :src="localData.thumb" alt=""/>
+      <img
+        v-show="hasDisplayImageState"
+        class="gc-picture"
+        :style="imageStyles"
+        :src="localData.image"
+        alt=""
+      />
+      <div
+        class="gc-tile"
+        ref="tileRef"
+        :style="thumbStyles"
+        @mousedown="handler.dragEvent"
+        @touchstart="handler.dragEvent"
+      >
+        <img
+          v-show="hasDisplayThumbImageState"
+          :src="localData.thumb"
+          alt=""
+        />
       </div>
     </div>
     <div class="gc-footer">
       <div class="gc-icon-block">
-        <close-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.closeEvent"/>
-        <refresh-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.refreshEvent"/>
+        <close-icon
+          :width="localConfig.iconSize"
+          :height="localConfig.iconSize"
+          @click="handler.closeEvent"
+        />
+        <refresh-icon
+          :width="localConfig.iconSize"
+          :height="localConfig.iconSize"
+          @click="handler.refreshEvent"
+        />
       </div>
     </div>
   </div>
@@ -28,13 +56,13 @@
 
 <script lang="ts" setup>
 import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
+import {SlideRegionConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
 import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 
-import {SlideRegionConfig, defaultConfig} from "./meta/config";
-import {SlideRegionData} from "./meta/data";
+import {defaultSlideRegionData, SlideRegionData} from "./meta/data";
 import {SlideRegionEvent} from "./meta/event";
 import {SlideRegionExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
@@ -45,6 +73,7 @@ const props = withDefaults(
       config?: SlideRegionConfig;
       events?: SlideRegionEvent,
       data: SlideRegionData,
+      [x: string]: any,
     }>(),
     {
       config: defaultConfig,
@@ -54,7 +83,7 @@ const props = withDefaults(
 )
 
 const { data, events, config } = props;
-const localData = reactive<SlideRegionData>({...toRaw(data)})
+const localData = reactive<SlideRegionData>({...defaultSlideRegionData(), ...toRaw(data)})
 const localEvent = reactive<SlideRegionEvent>({...toRaw(events)})
 const localConfig = reactive<SlideRegionConfig>({...defaultConfig(), ...toRaw(config)})
 
@@ -74,7 +103,22 @@ const rootRef = ref<any>(null)
 const containerRef = ref<any>(null)
 const tileRef = ref<any>(null)
 
-const handler = useHandler(localData, localEvent, localConfig, rootRef, containerRef, tileRef);
+const handler = useHandler(
+    localData,
+    localEvent,
+    localConfig,
+    rootRef,
+    containerRef,
+    tileRef,
+    () => {
+      localData.thumb = ''
+      localData.image = ''
+      localData.thumbX = 0
+      localData.thumbY = 0
+      localData.thumbWidth = 0
+      localData.thumbHeight = 0
+    }
+);
 
 const wrapperStyles = computed(() => {
   const hPadding = localConfig.horizontalPadding || 0
@@ -128,8 +172,8 @@ onMounted(async () => {
 defineExpose<SlideRegionExpose>({
   reset: handler.resetData,
   clear: handler.clearData,
-  refresh: handler.refreshEvent,
-  close: handler.closeEvent,
+  refresh: handler.refresh,
+  close: handler.close,
 });
 
 </script>

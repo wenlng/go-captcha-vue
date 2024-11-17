@@ -11,6 +11,7 @@ export function useHandler(
   rootRef: Ref,
   dragBlockRef: Ref,
   dragBarRef: Ref,
+  clearCbs: () => void
 ) {
   const state = reactive<{dragLeft: number, thumbAngle: number, isFreeze: boolean}>({dragLeft: 0, thumbAngle: data.angle || 0, isFreeze: false})
 
@@ -51,6 +52,7 @@ export function useHandler(
       } else {
         left = e.clientX - startX
       }
+
       angle = data.angle + (left * p)
 
       if (left >= maxWidth) {
@@ -85,7 +87,7 @@ export function useHandler(
 
       clearEvent()
 
-      if (currentAngle <= 0) {
+      if (currentAngle < 0) {
         return
       }
 
@@ -124,7 +126,6 @@ export function useHandler(
       scopeDom.removeEventListener("touchmove", moveEvent, { passive: false })
 
       dragDom.removeEventListener( "mouseup", upEvent, false)
-      // dragBarRef.value.removeEventListener( "mouseout", upEvent, false)
       dragDom.removeEventListener( "mouseenter", enterDragBlockEvent, false)
       dragDom.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
       dragDom.removeEventListener("touchend", upEvent, false)
@@ -141,7 +142,6 @@ export function useHandler(
     scopeDom.addEventListener("touchmove", moveEvent, { passive: false })
 
     dragDom.addEventListener( "mouseup", upEvent, false)
-    // dragBarRef.value.addEventListener( "mouseout", upEvent, false)
     dragDom.addEventListener( "mouseenter", enterDragBlockEvent, false)
     dragDom.addEventListener( "mouseleave", leaveDragBlockEvent, false)
     dragDom.addEventListener("touchend", upEvent, false)
@@ -151,19 +151,27 @@ export function useHandler(
   }
 
   const closeEvent = (e: Event|any) => {
-    event && event.close && event.close()
-    resetData()
+    close()
     e.cancelBubble = true
     e.preventDefault()
     return false
   }
 
   const refreshEvent = (e: Event|any) => {
-    event && event.refresh && event.refresh()
-    resetData()
+    refresh()
     e.cancelBubble = true
     e.preventDefault()
     return false
+  }
+
+  const close = () => {
+    event && event.close && event.close()
+    resetData()
+  }
+
+  const refresh = () => {
+    event && event.refresh && event.refresh()
+    resetData()
   }
 
   const resetData = () => {
@@ -172,9 +180,7 @@ export function useHandler(
   }
 
   const clearData = () => {
-    data.thumb = ''
-    data.image = ''
-    data.angle = 0
+    clearCbs && clearCbs()
     resetData()
   }
 
@@ -185,5 +191,7 @@ export function useHandler(
     refreshEvent,
     resetData,
     clearData,
+    refresh,
+    close,
   }
 }

@@ -1,30 +1,53 @@
 <template>
   <div
-      :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
-      :style="wrapperStyles"
-      v-show="hasDisplayWrapperState"
-      ref="rootRef"
+    :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
+    :style="wrapperStyles"
+    v-show="hasDisplayWrapperState"
+    ref="rootRef"
   >
     <div class="gc-header">
       <span>{{ localConfig.title }}</span>
       <div class="gc-icon-block">
-        <close-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.closeEvent"/>
-        <refresh-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.refreshEvent"/>
+        <close-icon
+          :width="localConfig.iconSize"
+          :height="localConfig.iconSize"
+          @click="handler.closeEvent"
+        />
+        <refresh-icon
+          :width="localConfig.iconSize"
+          :height="localConfig.iconSize"
+          @click="handler.refreshEvent"
+        />
       </div>
     </div>
-    <div class="gc-body gc-rotate-body" ref="containerRef" :style="imageBlockStyles">
-      <div :style="imageStyles">
+    <div
+      class="gc-body gc-rotate-body"
+      ref="containerRef"
+      :style="imageBlockStyles"
+    >
+      <div class="gc-body-inner" :style="imageStyles">
         <div class="gc-loading">
           <loading-icon />
         </div>
-        <div class="gc-picture gc-rotate-picture" :style="imageStyles">
-          <img v-show="hasDisplayImageState" :src="localData.image" alt="" />
+        <div
+          class="gc-picture gc-rotate-picture"
+          :style="imageStyles"
+        >
+          <img
+            v-show="hasDisplayImageState"
+            :src="localData.image"
+            alt=""
+          />
           <div class="gc-round" />
         </div>
 
         <div class="gc-thumb gc-rotate-thumb">
           <div class="gc-rotate-thumb-block" :style="thumbStyles">
-            <img v-show="hasDisplayThumbImageState" :src="localData.thumb" alt="" />
+            <img
+              v-show="hasDisplayThumbImageState"
+              :src="localData.thumb"
+              alt=""
+            />
           </div>
         </div>
       </div>
@@ -32,8 +55,17 @@
     <div class="gc-footer">
       <div class="gc-drag-slide-bar" ref="dragBarRef">
         <div class="gc-drag-line" />
-        <div class="gc-drag-block" ref="dragBlockRef" :class="!hasDisplayImageState && 'disabled'" @mousedown="handler.dragEvent" :style="{left: handler.state.dragLeft + 'px'}">
-          <div class="gc-drag-block-inline" @touchstart="handler.dragEvent">
+        <div
+          class="gc-drag-block"
+          ref="dragBlockRef"
+          :class="!hasDisplayImageState && 'disabled'"
+          @mousedown="handler.dragEvent"
+          :style="{left: handler.state.dragLeft + 'px'}"
+        >
+          <div
+            class="gc-drag-block-inline"
+            @touchstart="handler.dragEvent"
+          >
             <arrows-icon />
           </div>
         </div>
@@ -44,14 +76,14 @@
 
 <script lang="ts" setup>
 import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
+import {RotateConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
 import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 import ArrowsIcon from "../../assets/icons/arrows-icon.vue";
 
-import {RotateConfig, defaultConfig} from "./meta/config";
-import {RotateData} from "./meta/data";
+import {defaultRotateData, RotateData} from "./meta/data";
 import {RotateEvent} from "./meta/event";
 import {RotateExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
@@ -62,6 +94,7 @@ const props = withDefaults(
       config?: RotateConfig;
       events?: RotateEvent,
       data: RotateData,
+      [x: string]: any,
     }>(),
     {
       config: defaultConfig,
@@ -71,7 +104,7 @@ const props = withDefaults(
 )
 
 const { data, events, config } = props;
-const localData = reactive<RotateData>({...toRaw(data)})
+const localData = reactive<RotateData>({...defaultRotateData(), ...toRaw(data)})
 const localEvent = reactive<RotateEvent>({...toRaw(events)})
 const localConfig = reactive<RotateConfig>({...defaultConfig(), ...toRaw(config)})
 
@@ -91,7 +124,19 @@ const rootRef = ref<any>(null)
 const dragBarRef = ref<any>(null)
 const dragBlockRef = ref<any>(null)
 
-const handler = useHandler(localData, localEvent, localConfig, rootRef, dragBlockRef, dragBarRef);
+const handler = useHandler(
+    localData,
+    localEvent,
+    localConfig,
+    rootRef,
+    dragBlockRef,
+    dragBarRef,
+    () => {
+      localData.thumb = ''
+      localData.image = ''
+      localData.angle = 0
+    }
+);
 
 const wrapperStyles = computed(() => {
   const hPadding = localConfig.horizontalPadding || 0
@@ -150,8 +195,8 @@ onMounted(async () => {
 defineExpose<RotateExpose>({
   reset: handler.resetData,
   clear: handler.clearData,
-  refresh: handler.refreshEvent,
-  close: handler.closeEvent,
+  refresh: handler.refresh,
+  close: handler.close,
 });
 </script>
 
@@ -167,6 +212,10 @@ defineExpose<RotateExpose>({
     justify-content: center;
     align-items: center;
     margin: 10px auto 0;
+
+    .gc-body-inner {
+      border-radius: 100%;
+    }
   }
 
   .gc-rotate-picture {

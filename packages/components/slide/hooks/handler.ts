@@ -13,6 +13,7 @@ export function useHandler(
   tileRef: Ref,
   dragBlockRef: Ref,
   dragBarRef: Ref,
+  clearCbs: () => void
 ) {
   const state = reactive<{dragLeft: number, thumbLeft: number, isFreeze: boolean}>({dragLeft: 0, thumbLeft: data.thumbX || 0, isFreeze: false})
 
@@ -31,6 +32,7 @@ export function useHandler(
 
     const tileWith  = tileRef.value.offsetWidth
     const tileOffsetLeft = tileRef.value.offsetLeft
+    const containerMaxWidth = width - tileWith
     const tileMaxWith = width - (tileWith + tileOffsetLeft)
     const ratio = tileMaxWith / maxWidth
 
@@ -58,7 +60,7 @@ export function useHandler(
       let ctX = tileOffsetLeft + (left * ratio)
       if (left >= maxWidth) {
         state.dragLeft = maxWidth
-        state.thumbLeft = currentThumbX = maxWidth
+        state.thumbLeft = currentThumbX = containerMaxWidth
         return
       }
 
@@ -88,7 +90,7 @@ export function useHandler(
 
       clearEvent()
 
-      if (currentThumbX <= 0) {
+      if (currentThumbX < 0) {
         return
       }
 
@@ -127,7 +129,6 @@ export function useHandler(
       scopeDom.removeEventListener("touchmove", moveEvent, { passive: false })
 
       dragDom.removeEventListener( "mouseup", upEvent, false)
-      // dragBarRef.value.removeEventListener( "mouseout", upEvent, false)
       dragDom.removeEventListener( "mouseenter", enterDragBlockEvent, false)
       dragDom.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
       dragDom.removeEventListener("touchend", upEvent, false)
@@ -143,7 +144,6 @@ export function useHandler(
     scopeDom.addEventListener("touchmove", moveEvent, { passive: false })
 
     dragDom.addEventListener( "mouseup", upEvent, false)
-    // dragBarRef.value.addEventListener( "mouseout", upEvent, false)
     dragDom.addEventListener( "mouseenter", enterDragBlockEvent, false)
     dragDom.addEventListener( "mouseleave", leaveDragBlockEvent, false)
     dragDom.addEventListener("touchend", upEvent, false)
@@ -154,19 +154,27 @@ export function useHandler(
   }
 
   const closeEvent = (e: Event|any) => {
-    event && event.close && event.close()
-    resetData()
+    close()
     e.cancelBubble = true
     e.preventDefault()
     return false
   }
 
   const refreshEvent = (e: Event|any) => {
-    event && event.refresh && event.refresh()
-    resetData()
+    refresh()
     e.cancelBubble = true
     e.preventDefault()
     return false
+  }
+
+  const close = () => {
+    event && event.close && event.close()
+    resetData()
+  }
+
+  const refresh = () => {
+    event && event.refresh && event.refresh()
+    resetData()
   }
 
   const resetData = () => {
@@ -175,12 +183,7 @@ export function useHandler(
   }
 
   const clearData = () => {
-    data.thumb = ''
-    data.image = ''
-    data.thumbX = 0
-    data.thumbY = 0
-    data.thumbWidth = 0
-    data.thumbHeight = 0
+    clearCbs && clearCbs()
     resetData()
   }
 
@@ -191,5 +194,7 @@ export function useHandler(
     refreshEvent,
     resetData,
     clearData,
+    refresh,
+    close
   }
 }

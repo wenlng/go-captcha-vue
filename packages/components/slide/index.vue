@@ -1,31 +1,66 @@
 <template>
   <div
-      :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
-      :style="wrapperStyles"
-      v-show="hasDisplayWrapperState"
-      ref="rootRef"
+    :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
+    :style="wrapperStyles"
+    v-show="hasDisplayWrapperState"
+    ref="rootRef"
   >
     <div class="gc-header">
       <span>{{ localConfig.title }}</span>
       <div class="gc-icon-block">
-        <close-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.closeEvent"/>
-        <refresh-icon :width="localConfig.iconSize" :height="localConfig.iconSize" @click="handler.refreshEvent"/>
+        <close-icon
+          :width="localConfig.iconSize"
+          :height="localConfig.iconSize"
+          @click="handler.closeEvent"
+        />
+        <refresh-icon
+          :width="localConfig.iconSize"
+          :height="localConfig.iconSize"
+          @click="handler.refreshEvent"
+        />
       </div>
     </div>
-    <div class="gc-body" ref="containerRef" :style="imageStyles">
+    <div
+      class="gc-body"
+      ref="containerRef"
+      :style="imageStyles"
+    >
       <div class="gc-loading">
         <loading-icon />
       </div>
-      <img class="gc-picture" v-show="hasDisplayImageState" :style="imageStyles" :src="localData.image" alt=""/>
-      <div class="gc-tile" ref="tileRef" :style="thumbStyles">
-        <img v-show="hasDisplayThumbImageState" :src="localData.thumb" alt=""/>
+      <img
+        class="gc-picture"
+        v-show="hasDisplayImageState"
+        :style="imageStyles"
+        :src="localData.image"
+        alt=""
+      />
+      <div
+        class="gc-tile"
+        ref="tileRef"
+        :style="thumbStyles"
+      >
+        <img
+          v-show="hasDisplayThumbImageState"
+          :src="localData.thumb"
+          alt=""
+        />
       </div>
     </div>
     <div class="gc-footer">
       <div class="gc-drag-slide-bar" ref="dragBarRef">
         <div class="gc-drag-line" />
-        <div class="gc-drag-block" :class="!hasDisplayImageState && 'disabled'" ref="dragBlockRef" @mousedown="handler.dragEvent" :style="{left: handler.state.dragLeft + 'px'}">
-          <div class="gc-drag-block-inline" @touchstart="handler.dragEvent">
+        <div
+          class="gc-drag-block"
+          :class="!hasDisplayImageState && 'disabled'"
+          ref="dragBlockRef"
+          @mousedown="handler.dragEvent"
+          :style="{left: handler.state.dragLeft + 'px'}"
+        >
+          <div
+            class="gc-drag-block-inline"
+            @touchstart="handler.dragEvent"
+          >
             <arrows-icon />
           </div>
         </div>
@@ -36,14 +71,14 @@
 
 <script lang="ts" setup>
 import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
+import {SlideConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
 import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 import ArrowsIcon from "../../assets/icons/arrows-icon.vue";
 
-import {SlideConfig, defaultConfig} from "./meta/config";
-import {SlideData} from "./meta/data";
+import {defaultSlideData, SlideData} from "./meta/data";
 import {SlideEvent} from "./meta/event";
 import {SlideExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
@@ -54,6 +89,7 @@ const props = withDefaults(
       config?: SlideConfig;
       events?: SlideEvent,
       data: SlideData,
+      [x: string]: any,
     }>(),
     {
       config: defaultConfig,
@@ -63,7 +99,7 @@ const props = withDefaults(
 )
 
 const { data, events, config } = props;
-const localData = reactive<SlideData>({...toRaw(data)})
+const localData = reactive<SlideData>({...defaultSlideData(), ...toRaw(data)})
 const localEvent = reactive<SlideEvent>({...toRaw(events)})
 const localConfig = reactive<SlideConfig>({...defaultConfig(), ...toRaw(config)})
 
@@ -85,7 +121,24 @@ const containerRef = ref<any>(null)
 const dragBlockRef = ref<any>(null)
 const tileRef = ref<any>(null)
 
-const handler = useHandler(localData, localEvent, localConfig, rootRef, containerRef, tileRef, dragBlockRef, dragBarRef);
+const handler = useHandler(
+    localData,
+    localEvent,
+    localConfig,
+    rootRef,
+    containerRef,
+    tileRef,
+    dragBlockRef,
+    dragBarRef,
+    () => {
+      localData.thumb = ''
+      localData.image = ''
+      localData.thumbX = 0
+      localData.thumbY = 0
+      localData.thumbWidth = 0
+      localData.thumbHeight = 0
+    }
+);
 
 const wrapperStyles = computed(() => {
   const hPadding = localConfig.horizontalPadding || 0
@@ -139,8 +192,8 @@ onMounted(async () => {
 defineExpose<SlideExpose>({
   reset: handler.resetData,
   clear: handler.clearData,
-  refresh: handler.refreshEvent,
-  close: handler.closeEvent,
+  refresh: handler.refresh,
+  close: handler.close,
 });
 </script>
 
@@ -159,5 +212,4 @@ defineExpose<SlideExpose>({
     }
   }
 }
-
 </style>

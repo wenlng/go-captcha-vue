@@ -33,6 +33,7 @@ const props = withDefaults(
       disabled?: boolean;
       type?: ButtonType;
       title?: string;
+      [x: string]: any,
     }>(),
     {
       config: defaultConfig,

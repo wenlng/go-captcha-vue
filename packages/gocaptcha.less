@@ -19,7 +19,7 @@
   --go-captcha-theme-drag-icon-color: #ffffff;
   --go-captcha-theme-round-color: #e0e0e0;
   --go-captcha-theme-loading-icon-color: #3e7cff;
-
+  --go-captcha-theme-body-bg-color: #34383e;
 
   --go-captcha-theme-default-color: #3e7cff;
   --go-captcha-theme-default-bg-color: #ecf5ff;
@@ -107,11 +107,15 @@
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    background: #34383e;
+    background: var(--go-captcha-theme-body-bg-color);
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     overflow: hidden;
+
+    .gc-body-inner{
+      background: var(--go-captcha-theme-body-bg-color);
+    }
   }
 
   .gc-picture{
@@ -213,6 +217,7 @@
       &.disabled {
         pointer-events: none;
         background-color: var(--go-captcha-theme-btn-disabled-color);
+        border-color: var(--go-captcha-theme-btn-disabled-color);
       }
     }
   }
@@ -271,6 +276,7 @@
     &.disabled {
       pointer-events: none;
       background-color: var(--go-captcha-theme-btn-disabled-color);
+      border-color: var(--go-captcha-theme-btn-disabled-color);
     }
   }
 
