@@ -1,6 +1,6 @@
 {
   "name": "go-captcha-vue",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": false,
   "type": "module",
   "license": "MIT",
@@ -51,7 +51,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "vue": "^2.7.14"
+    "vue": "<3"
   },
   "peerDependencies": {
     "vue": "<3"

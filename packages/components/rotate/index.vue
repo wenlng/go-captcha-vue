@@ -25,7 +25,7 @@
       ref="containerRef"
       :style="imageBlockStyles"
     >
-      <div :style="imageStyles">
+      <div class="gc-body-inner" :style="imageStyles">
         <div class="gc-loading">
           <loading-icon />
         </div>
@@ -212,6 +212,10 @@ defineExpose<RotateExpose>({
     justify-content: center;
     align-items: center;
     margin: 10px auto 0;
+
+    .gc-body-inner {
+      border-radius: 100%;
+    }
   }
 
   .gc-rotate-picture {
