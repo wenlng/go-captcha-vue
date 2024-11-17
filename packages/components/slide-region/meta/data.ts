@@ -13,6 +13,15 @@ export interface SlideRegionData {
   thumb: string;
 }
 
+export const defaultSlideRegionData = (): SlideRegionData => ({
+  thumbX: 0,
+  thumbY: 0,
+  thumbWidth: 0,
+  thumbHeight: 0,
+  image: '',
+  thumb: ''
+})
+
 export interface SlideRegionPoint {
   x: number,
   y: number,

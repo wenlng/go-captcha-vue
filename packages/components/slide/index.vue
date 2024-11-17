@@ -78,7 +78,7 @@ import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 import ArrowsIcon from "../../assets/icons/arrows-icon.vue";
 
-import {SlideData} from "./meta/data";
+import {defaultSlideData, SlideData} from "./meta/data";
 import {SlideEvent} from "./meta/event";
 import {SlideExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
@@ -99,7 +99,7 @@ const props = withDefaults(
 )
 
 const { data, events, config } = props;
-const localData = reactive<SlideData>({...toRaw(data)})
+const localData = reactive<SlideData>({...defaultSlideData(), ...toRaw(data)})
 const localEvent = reactive<SlideEvent>({...toRaw(events)})
 const localConfig = reactive<SlideConfig>({...defaultConfig(), ...toRaw(config)})
 

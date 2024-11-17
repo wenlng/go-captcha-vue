@@ -62,7 +62,7 @@ import CloseIcon from "../../assets/icons/close-icon.vue";
 import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 
-import {SlideRegionData} from "./meta/data";
+import {defaultSlideRegionData, SlideRegionData} from "./meta/data";
 import {SlideRegionEvent} from "./meta/event";
 import {SlideRegionExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
@@ -83,7 +83,7 @@ const props = withDefaults(
 )
 
 const { data, events, config } = props;
-const localData = reactive<SlideRegionData>({...toRaw(data)})
+const localData = reactive<SlideRegionData>({...defaultSlideRegionData(), ...toRaw(data)})
 const localEvent = reactive<SlideRegionEvent>({...toRaw(events)})
 const localConfig = reactive<SlideRegionConfig>({...defaultConfig(), ...toRaw(config)})
 

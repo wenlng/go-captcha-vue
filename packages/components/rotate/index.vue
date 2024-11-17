@@ -83,7 +83,7 @@ import RefreshIcon from "../../assets/icons/refresh-icon.vue";
 import LoadingIcon from "../../assets/icons/loading-icon.vue";
 import ArrowsIcon from "../../assets/icons/arrows-icon.vue";
 
-import {RotateData} from "./meta/data";
+import {defaultRotateData, RotateData} from "./meta/data";
 import {RotateEvent} from "./meta/event";
 import {RotateExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
@@ -104,7 +104,7 @@ const props = withDefaults(
 )
 
 const { data, events, config } = props;
-const localData = reactive<RotateData>({...toRaw(data)})
+const localData = reactive<RotateData>({...defaultRotateData(), ...toRaw(data)})
 const localEvent = reactive<RotateEvent>({...toRaw(events)})
 const localConfig = reactive<RotateConfig>({...defaultConfig(), ...toRaw(config)})
 

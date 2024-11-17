@@ -13,6 +13,15 @@ export interface SlideData {
   thumb: string;
 }
 
+export const defaultSlideData = (): SlideData => ({
+  thumbX: 0,
+  thumbY: 0,
+  thumbWidth: 0,
+  thumbHeight: 0,
+  image: '',
+  thumb: ''
+})
+
 export interface SlidePoint {
   x: number,
   y: number,
