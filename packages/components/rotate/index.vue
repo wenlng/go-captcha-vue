@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
+import {computed, nextTick, onMounted, onUnmounted, reactive, ref, toRaw, watch} from "vue"
 import {RotateConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
@@ -185,12 +185,15 @@ const hasDisplayWrapperState = computed(() => {
   return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
 })
 
+const fn = (event: any) => event.preventDefault()
 onMounted(async () => {
   await nextTick();
-  if (dragBlockRef.value) {
-    dragBlockRef.value.addEventListener('dragstart', (event: any) => event.preventDefault());
-  }
+  dragBlockRef.value && dragBlockRef.value.addEventListener('dragstart', fn);
 });
+
+onUnmounted(() => {
+  dragBlockRef.value && dragBlockRef.value.removeEventListener('dragstart', fn);
+})
 
 defineExpose<RotateExpose>({
   reset: handler.resetData,

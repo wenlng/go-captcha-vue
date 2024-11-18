@@ -82,6 +82,7 @@ import {defaultSlideData, SlideData} from "./meta/data";
 import {SlideEvent} from "./meta/event";
 import {SlideExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
+import {onUnmounted} from "@vue/runtime-core";
 
 // @ts-ignore
 const props = withDefaults(
@@ -182,12 +183,15 @@ const hasDisplayWrapperState = computed(() => {
   return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
 })
 
+const fn = (event: any) => event.preventDefault()
 onMounted(async () => {
   await nextTick();
-  if (dragBlockRef.value) {
-    dragBlockRef.value.addEventListener('dragstart', (event: any) => event.preventDefault());
-  }
+  dragBlockRef.value && dragBlockRef.value.addEventListener('dragstart', fn);
 });
+
+onUnmounted(() => {
+  dragBlockRef.value && dragBlockRef.value.removeEventListener('dragstart', fn);
+})
 
 defineExpose<SlideExpose>({
   reset: handler.resetData,
