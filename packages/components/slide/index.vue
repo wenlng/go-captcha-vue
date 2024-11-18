@@ -186,7 +186,6 @@ const hasDisplayWrapperState = computed(() => {
 const fn = (event: any) => event.preventDefault()
 onMounted(async () => {
   await nextTick();
-
   dragBlockRef.value && dragBlockRef.value.addEventListener('dragstart', fn);
 });
 

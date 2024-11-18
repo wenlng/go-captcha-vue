@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
+import {computed, nextTick, onMounted, onUnmounted, reactive, ref, toRaw, watch} from "vue"
 import {RotateConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
@@ -87,7 +87,6 @@ import {defaultRotateData, RotateData} from "./meta/data";
 import {RotateEvent} from "./meta/event";
 import {RotateExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
-import {onUnmounted} from "@vue/runtime-core";
 
 // @ts-ignore
 const props = withDefaults(
