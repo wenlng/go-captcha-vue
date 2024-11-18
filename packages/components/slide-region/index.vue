@@ -66,6 +66,7 @@ import {defaultSlideRegionData, SlideRegionData} from "./meta/data";
 import {SlideRegionEvent} from "./meta/event";
 import {SlideRegionExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
+import {onUnmounted} from "@vue/runtime-core";
 
 // @ts-ignore
 const props = withDefaults(
@@ -162,12 +163,15 @@ const hasDisplayWrapperState = computed(() => {
   return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
 })
 
+const fn = (event: any) => event.preventDefault()
 onMounted(async () => {
   await nextTick();
-  if (tileRef.value) {
-    tileRef.value.addEventListener('dragstart', (event: any) => event.preventDefault());
-  }
+  tileRef.value && tileRef.value.addEventListener('dragstart', fn);
 });
+
+onUnmounted(() => {
+  tileRef.value && tileRef.value.removeEventListener('dragstart', fn);
+})
 
 defineExpose<SlideRegionExpose>({
   reset: handler.resetData,
