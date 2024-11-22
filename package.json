@@ -57,7 +57,7 @@
     "vue": ">=3"
   },
   "dependencies": {
-    "vue": "^3.0.1"
+    "vue": ">=3"
   },
   "devDependencies": {
     "@types/node": "^16.11.10",
