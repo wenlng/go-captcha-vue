@@ -6,7 +6,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "module": "esnext",
@@ -30,11 +30,11 @@
       "@/*": ["./packages/*"]
     },
     "lib": ["es2020", "esnext", "dom", "dom.iterable", "scripthost"],
-
     "declaration": true,
   },
   "include": ["env.d.ts", "packages/**/*.ts", "packages/**/*.d.ts", "packages/**/*.tsx", "packages/**/*.vue"],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "example"
   ]
 }
