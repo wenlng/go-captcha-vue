@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
+import {computed, nextTick, onUnmounted, onMounted, reactive, ref, toRaw, watch} from "vue"
 import {SlideConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
@@ -82,7 +82,6 @@ import {defaultSlideData, SlideData} from "./meta/data";
 import {SlideEvent} from "./meta/event";
 import {SlideExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
-import {onUnmounted} from "@vue/runtime-core";
 
 // @ts-ignore
 const props = withDefaults(

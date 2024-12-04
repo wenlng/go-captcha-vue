@@ -24,6 +24,10 @@ export function useHandler(
   },{ deep: true })
 
   const dragEvent = (e: Event|any) => {
+    if (!checkTargetFather(dragBarRef.value, e)) {
+      return
+    }
+
     const touch = e.touches && e.touches[0];
     const offsetLeft = dragBlockRef.value.offsetLeft
     const width = containerRef.value.offsetWidth
@@ -84,17 +88,18 @@ export function useHandler(
         return
       }
 
+      clearEvent()
+
       if (!isMoving) {
         return
       }
 
-      clearEvent()
+      isMoving = false
 
       if (currentThumbX < 0) {
         return
       }
 
-      isMoving = false
       event.confirm && event.confirm({x: parseInt(currentThumbX.toString()), y: data.thumbY || 0}, () => {
         resetData()
       })
