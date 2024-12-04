@@ -1,19 +1,21 @@
 <div align="center">
 <img width="120" style="padding-top: 50px; margin: 0;" src="http://47.104.180.148/go-captcha/gocaptcha_logo.svg?v=1"/>
 <h1 style="margin: 0; padding: 0">Go Captcha</h1>
-<p>Behavior Captcha For Vue</p>
-
+<p>Vue 行为验证码</p>
 </div>
 
 <br/>
 
-> English | [中文](README_zh.md)
+> [English](README.md) | 中文
 
 <br/>
 
-<p> ⭐️ If it helps you, please give a star.</p>
+<p style="text-align: center"> ⭐️ 如果能帮助到你，请随手给点一个star</p>
+<p style="text-align: center">QQ交流群：178498936</p>
 
 <img src="http://47.104.180.148/go-captcha/go-captcha-v2.jpg" alt="Poster">
+
+<br/>
 
 
 | Vue Version            | Go Captcha Version |
@@ -21,8 +23,8 @@
 | vue >= 2.7.14 && < 3.0 | go-captcha-vue@^1  |
 | vue >= 3.0             | go-captcha-vue@^2  |
 
-## Install
-Greater than or equal to vue2.7.14 and less than vue3.0
+## 安装
+vue版本 >= 2.7.14 并且 < 3.0
 ```shell
 yarn add go-captcha-vue@^1
 # or
@@ -31,7 +33,7 @@ npm install go-captcha-vue@^1
 pnpm install go-captcha-vue@^1
 ```
 
-Greater than vue3.0
+vue版本 >= 3.0
 ```shell
 yarn add go-captcha-vue@^2
 # or
@@ -40,7 +42,7 @@ npm install go-captcha-vue@^2
 pnpm install go-captcha-vue@^2
 ```
 
-## Use Go Captcha
+## 使用
 ```ts
 import "go-captcha-vue/dist/style.css"
 import GoCaptcha from "go-captcha-vue"
@@ -57,7 +59,7 @@ Vue.component('gocaptcha-button', Button)
 ```
 
 
-## Click Mode
+## 点选式
 ```vue
 <gocaptcha-click
   :config="{}"
@@ -114,7 +116,7 @@ interface ExportMethods {
 }
 ```
 
-## Slide Mode
+## 滑动式
 ```vue
 <gocaptcha-slide
   :config="{}"
@@ -174,7 +176,7 @@ interface ExportMethods {
 }
 ```
 
-## Drag-And-Drop Mode
+## 拖拽式
 ```vue
 <gocaptcha-slide-region
   :config="{}"
@@ -234,7 +236,7 @@ interface ExportMethods {
 }
 ```
 
-## Rotation Mode
+## 旋转式
 ```vue
 <gocaptcha-rotate
   :config="{}"
@@ -293,7 +295,7 @@ interface ExportMethods {
 
 
 
-## Button
+## 按钮
 ```vue
 <gocaptcha-button @clickEvent="() => console.log('hello')"/>
 ```
@@ -318,3 +320,9 @@ export interface CaptchaConfig {
   horizontalPadding?: number;
 }
 ```
+
+## 👍 赞助一下
+<div>
+<a href="http://gocaptcha.wencodes.com/sponsor/" target="_blank">http://gocaptcha.wencodes.com/sponsor/</a>
+</div>
+<br/>

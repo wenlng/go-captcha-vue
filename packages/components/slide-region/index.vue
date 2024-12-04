@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from "vue"
+import {computed, nextTick, onUnmounted, onMounted, reactive, ref, toRaw, watch} from "vue"
 import {SlideRegionConfig, defaultConfig} from "./meta/config";
 
 import CloseIcon from "../../assets/icons/close-icon.vue";
@@ -66,7 +66,6 @@ import {defaultSlideRegionData, SlideRegionData} from "./meta/data";
 import {SlideRegionEvent} from "./meta/event";
 import {SlideRegionExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
-import {onUnmounted} from "@vue/runtime-core";
 
 // @ts-ignore
 const props = withDefaults(

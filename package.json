@@ -1,12 +1,12 @@
 {
   "name": "go-captcha-vue",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "private": false,
   "type": "module",
   "license": "MIT",
   "email": "wengaolng@gmail.com",
   "author": "Awen <wengaolng@gmail.com>",
-  "description": "This is the vue package for go-captcha",
+  "description": "GoCaptcha for Vue, which implements click mode, slider mode, drag-drop mode and rotation mode.",
   "keywords": [
     "go-captcha-vue",
     "go-captcha",
@@ -56,9 +56,6 @@
   "peerDependencies": {
     "vue": ">=3"
   },
-  "dependencies": {
-    "vue": ">=3"
-  },
   "devDependencies": {
     "@types/node": "^16.11.10",
     "@vitejs/plugin-vue": "4.4.0",
@@ -70,6 +67,7 @@
     "npm-run-all2": "^6.2.0",
     "ts-morph": "^22.0.0",
     "typescript": "~5.4.0",
+    "vue": "^3.0.0",
     "vite": "4.4.11",
     "vue-tsc": "^2.0.11"
   }
