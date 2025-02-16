@@ -208,9 +208,9 @@ nextTick(() => {
 /////////////////////////////////
 
 const rotateData = reactive({
-  angle: 20,
   image: rotateImage,
   thumb: rotateThumb,
+  thumbSize: 195,
 })
 const rotateEvents = {
   rotate(angle: number): void {

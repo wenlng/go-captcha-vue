@@ -1,6 +1,6 @@
 {
   "name": "go-captcha-vue",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "private": false,
   "type": "module",
   "license": "MIT",
@@ -47,11 +47,11 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "build-only": "vite build && run-p tsd",
+    "build": "run-p type:check \"build:only {@}\" --",
+    "build:only": "vite build && run-p tsd",
     "tsd": "vue-tsc --rootDir ./packages --declaration --emitDeclarationOnly --noEmit false --outDir ./dist",
     "preview": "vite preview --port 5050",
-    "type-check": "vue-tsc --noEmit -p tsconfig.json"
+    "type:check": "vue-tsc --noEmit -p tsconfig.json"
   },
   "peerDependencies": {
     "vue": ">=3"

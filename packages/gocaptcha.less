@@ -21,9 +21,13 @@
   --go-captcha-theme-loading-icon-color: #3e7cff;
   --go-captcha-theme-body-bg-color: #34383e;
 
+  --go-captcha-theme-dot-color-color: #cedffe;
+  --go-captcha-theme-dot-bg-color: #4e87ff;
+  --go-captcha-theme-dot-border-color: #ffffff;
+
   --go-captcha-theme-default-color: #3e7cff;
   --go-captcha-theme-default-bg-color: #ecf5ff;
-  --go-captcha-theme-default-border-color: #3e7cff;
+  --go-captcha-theme-default-border-color: #50a1ff;
   --go-captcha-theme-default-hover-color: #e0efff;
 
   --go-captcha-theme-error-color: #ed4630;
@@ -42,7 +46,7 @@
 .go-captcha {
   &.gc-wrapper {
     padding: 12px 16px;
-    background-color: var(--go-captcha-theme-bg-color);
+    //background-color: var(--go-captcha-theme-bg-color);
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -62,6 +66,10 @@
     box-shadow: 0 0 20px rgba(100, 100, 100, 0.1);
     -webkit-box-shadow: 0 0 20px rgba(100, 100, 100, 0.1);
     -moz-box-shadow: 0 0 20px rgba(100, 100, 100, 0.1);
+
+    &.gc-wrapper {
+      background-color: var(--go-captcha-theme-bg-color);
+    }
   }
 
   .gc-header {
@@ -114,6 +122,7 @@
     overflow: hidden;
 
     .gc-body-inner{
+      position: relative;
       background: var(--go-captcha-theme-body-bg-color);
     }
   }
@@ -204,7 +213,7 @@
       color: var(--go-captcha-theme-btn-color);
       background-color: var(--go-captcha-theme-btn-bg-color);
       border: 1px solid transparent;
-      border-color: var(--go-captcha-theme-btn-bg-color);
+      border-color: var(--go-captcha-theme-btn-border-color);
       -webkit-appearance: none;
       box-sizing: border-box;
       outline: none;
