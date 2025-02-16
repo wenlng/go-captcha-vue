@@ -142,7 +142,7 @@ const imageStyles = computed(() => {
 })
 
 const hasDisplayImageState = computed(() => {
-  return localData.image != '' || localData.thumb != ''
+  return (localData.image && localData.image.length > 0) || (localData.thumb && localData.thumb.length > 0)
 })
 
 const hasDisplayWrapperState = computed(() => {
@@ -174,9 +174,10 @@ defineExpose<ClickExpose>({
       z-index: 2;
       width: 22px;
       height: 22px;
-      color: #cedffe;
-      background: #3e7cff;
+      color: var(--go-captcha-theme-dot-color-color);
+      background: var(--go-captcha-theme-dot-bg-color);
       border: 3px solid #f7f9fb;
+      border-color: var(--go-captcha-theme-dot-border-color);
       display:-webkit-box;
       display:-webkit-flex;
       display:-ms-flexbox;

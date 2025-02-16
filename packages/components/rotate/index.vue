@@ -99,7 +99,7 @@ const props = withDefaults(
     {
       config: defaultConfig,
       events: () => ({} as RotateEvent),
-      data: () => ({} as RotateData),
+      data: defaultRotateData,
     },
 )
 
@@ -154,7 +154,11 @@ const wrapperStyles = computed(() => {
 
 const thumbStyles = computed(() => {
   return {
-    transform: `rotate(${handler.state.thumbAngle}deg)`
+    transform: `rotate(${handler.state.thumbAngle}deg)`,
+    ...(localData.thumbSize > 0 ? {
+      width: localData.thumbSize + "px",
+      height: localData.thumbSize + "px"
+    } : {})
   }
 })
 
@@ -174,11 +178,11 @@ const imageStyles = computed(() => {
 })
 
 const hasDisplayImageState = computed(() => {
-  return localData.image != ''
+  return localData.image && localData.image.length > 0
 })
 
 const hasDisplayThumbImageState = computed(() => {
-  return localData.thumb != ''
+  return localData.thumb && localData.thumb.length > 0
 })
 
 const hasDisplayWrapperState = computed(() => {
@@ -261,6 +265,14 @@ defineExpose<RotateExpose>({
     left: 0;
     right: 0;
     bottom: 0;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     img {
       max-width: 100%;

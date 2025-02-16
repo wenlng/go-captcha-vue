@@ -78,7 +78,7 @@ const props = withDefaults(
     {
       config: defaultConfig,
       events: () => ({} as SlideRegionEvent),
-      data: () => ({} as SlideRegionData),
+      data: defaultSlideRegionData,
     },
 )
 
@@ -151,11 +151,11 @@ const imageStyles = computed(() => {
 })
 
 const hasDisplayImageState = computed(() => {
-  return localData.image != ''
+  return localData.image && localData.image.length > 0
 })
 
 const hasDisplayThumbImageState = computed(() => {
-  return localData.thumb != ''
+  return localData.thumb && localData.thumb.length > 0
 })
 
 const hasDisplayWrapperState = computed(() => {

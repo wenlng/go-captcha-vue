@@ -94,7 +94,7 @@ const props = withDefaults(
     {
       config: defaultConfig,
       events: () => ({} as SlideEvent),
-      data: () => ({} as SlideData),
+      data: defaultSlideData,
     },
 )
 
@@ -171,11 +171,11 @@ const imageStyles = computed(() => {
 })
 
 const hasDisplayImageState = computed(() => {
-  return localData.image != ''
+  return localData.image && localData.image.length > 0
 })
 
 const hasDisplayThumbImageState = computed(() => {
-  return localData.thumb != ''
+  return localData.thumb && localData.thumb.length > 0
 })
 
 const hasDisplayWrapperState = computed(() => {
