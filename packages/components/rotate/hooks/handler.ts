@@ -57,7 +57,7 @@ export function useHandler(
         left = e.clientX - startX
       }
 
-      angle = data.angle + (left * p)
+      angle = (data.angle || 0) + (left * p)
 
       if (left >= maxWidth) {
         state.dragLeft = maxWidth
