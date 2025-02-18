@@ -6,7 +6,7 @@
   "license": "MIT",
   "email": "wengaolng@gmail.com",
   "author": "Awen <wengaolng@gmail.com>",
-  "description": "GoCaptcha for Vue, which implements click mode, slider mode, drag-drop mode and rotation mode.",
+  "description": "GoCaptcha of Vue, which implements click mode, slider mode, drag-drop mode and rotation mode.",
   "keywords": [
     "go-captcha-vue",
     "go-captcha",

@@ -1,7 +1,7 @@
 <div align="center">
 <img width="120" style="padding-top: 50px; margin: 0;" src="http://47.104.180.148/go-captcha/gocaptcha_logo.svg?v=1"/>
 <h1 style="margin: 0; padding: 0">Go Captcha</h1>
-<p>Behavior Captcha For Vue</p>
+<p>Behavior Captcha Of Vue</p>
 
 </div>
 
