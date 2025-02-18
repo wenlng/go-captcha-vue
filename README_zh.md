@@ -2,6 +2,13 @@
 <img width="120" style="padding-top: 50px; margin: 0;" src="http://47.104.180.148/go-captcha/gocaptcha_logo.svg?v=1"/>
 <h1 style="margin: 0; padding: 0">Go Captcha</h1>
 <p>Vue 行为验证码</p>
+
+<a href="https://github.com/wenlng/go-captcha-vue/releases"><img src="https://img.shields.io/github/v/release/wenlng/go-captcha-vue.svg"/></a>
+<a href="https://www.npmjs.com/package/go-captcha-vue"><img src="https://img.shields.io/npm/v/go-captcha-vue"/></a>
+<a href="https://github.com/wenlng/go-captcha-vue/blob/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg"/></a>
+<a href="https://github.com/wenlng/go-captcha-vue"><img src="https://img.shields.io/github/stars/wenlng/go-captcha-vue.svg"/></a>
+<a href="https://github.com/wenlng/go-captcha-vue"><img src="https://img.shields.io/github/last-commit/wenlng/go-captcha-vue.svg"/></a>
+
 </div>
 
 <br/>
