@@ -1,5 +1,5 @@
 <div align="center">
-<img width="120" style="padding-top: 50px; margin: 0;" src="http://47.104.180.148/go-captcha/gocaptcha_logo.svg?v=1"/>
+<img width="120" style="padding-top: 50px; margin: 0;" src="https://github.com/wenlng/git-assets/blob/master/go-captcha/gocaptcha_logo.svg?raw=true"/>
 <h1 style="margin: 0; padding: 0">Go Captcha</h1>
 <p>Vue 行为验证码</p>
 
@@ -20,7 +20,7 @@
 <p style="text-align: center"> ⭐️ 如果能帮助到你，请随手给点一个star</p>
 <p style="text-align: center">QQ交流群：178498936</p>
 
-<img src="http://47.104.180.148/go-captcha/go-captcha-v2.jpg" alt="Poster">
+<img src="https://github.com/wenlng/git-assets/blob/master/go-captcha/go-captcha-v2.jpg?raw=true" alt="Poster">
 
 <br/>
 

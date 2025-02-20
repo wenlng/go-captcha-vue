@@ -174,7 +174,7 @@ defineExpose<ClickExpose>({
       z-index: 2;
       width: 22px;
       height: 22px;
-      color: var(--go-captcha-theme-dot-color-color);
+      color: var(--go-captcha-theme-dot-color);
       background: var(--go-captcha-theme-dot-bg-color);
       border: 3px solid #f7f9fb;
       border-color: var(--go-captcha-theme-dot-border-color);
