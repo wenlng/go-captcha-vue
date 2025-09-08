@@ -9,4 +9,5 @@ export interface SlideExpose {
   clear: () => void,
   refresh: () => void,
   close: () => void,
+  setTips: (show: boolean, content: string, type: string) => void,
 }

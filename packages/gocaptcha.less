@@ -4,7 +4,7 @@
  * @Email wengaolng@gmail.com
  **/
 
-:root{
+:root {
   --go-captcha-theme-text-color: #333333;
   --go-captcha-theme-bg-color: #ffffff;
   --go-captcha-theme-btn-color: #ffffff;
@@ -55,6 +55,54 @@
     box-sizing: border-box;
   }
 
+  @shine-gradient: linear-gradient(45deg,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0.3) 48%,
+      rgba(255, 255, 255, 0.3) 52%,
+      rgba(255, 255, 255, 0) 60%);
+  @font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+  .border-radius(@bottom-left: 6px, @bottom-right: 6px) {
+    border-bottom-left-radius: @bottom-left;
+    border-bottom-right-radius: @bottom-right;
+  }
+
+  .shine-effect-tr-bl {
+    display: inline-block;
+    font-size: 16px;
+    font-family: @font-stack;
+    text-align: center;
+    .border-radius();
+    line-height: 1.5;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: @shine-gradient;
+      animation: sweep-tr-bl 1s linear forwards;
+    }
+  }
+
+  // Keyframes
+  @keyframes sweep-tr-bl {
+    0% {
+      transform: translate(50%, -50%);
+    }
+
+    100% {
+      transform: translate(-50%, 50%);
+    }
+  }
+
   &.gc-theme {
     border: 1px solid rgba(206, 223, 254, 0.5);
     border-color: var(--go-captcha-theme-border-color);
@@ -78,13 +126,13 @@
     font-size: 15px;
     color: var(--go-captcha-theme-text-color);
 
-    display:-webkit-box;
-    display:-webkit-flex;
-    display:-ms-flexbox;
-    display:flex;
-    -webkit-box-align:center;
-    -webkit-align-items:center;
-    -ms-flex-align:center;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
     align-items: center;
 
     -webkit-touch-callout: none;
@@ -106,7 +154,7 @@
     }
   }
 
-  .gc-body{
+  .gc-body {
     position: relative;
     width: 100%;
     margin-top: 10px;
@@ -121,19 +169,19 @@
     -moz-border-radius: 5px;
     overflow: hidden;
 
-    .gc-body-inner{
+    .gc-body-inner {
       position: relative;
       background: var(--go-captcha-theme-body-bg-color);
     }
   }
 
-  .gc-picture{
+  .gc-picture {
     position: relative;
     z-index: 2;
     width: 100%;
   }
 
-  .gc-loading{
+  .gc-loading {
     position: absolute;
     z-index: 1;
     top: 50%;
@@ -148,13 +196,14 @@
     align-content: center;
     justify-content: center;
 
-    svg, circle {
+    svg,
+    circle {
       color: var(--go-captcha-theme-loading-icon-color);
       fill: var(--go-captcha-theme-loading-icon-color);
     }
   }
 
-  .gc-footer{
+  .gc-footer {
     width: 100%;
     height: 50px;
     color: #34383e;
@@ -162,7 +211,7 @@
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
-    display:flex;
+    display: flex;
     align-items: center;
     padding-top: 10px;
 
@@ -177,14 +226,15 @@
     }
   }
 
-  .gc-icon-block{
+  .gc-icon-block {
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
-    display:flex;
+    display: flex;
     align-items: center;
-    svg{
+
+    svg {
       color: var(--go-captcha-theme-icon-color);
       fill: var(--go-captcha-theme-icon-color);
       margin: 0 5px;
@@ -192,11 +242,11 @@
     }
   }
 
-  .gc-button-block{
+  .gc-button-block {
     width: 120px;
     height: 40px;
 
-    button{
+    button {
       width: 100%;
       height: 40px;
       //letter-spacing: 2px;
@@ -238,7 +288,7 @@
     touch-action: none;
   }
 
-  .gc-drag-line{
+  .gc-drag-line {
     position: absolute;
     height: 14px;
     background-color: var(--go-captcha-theme-drag-bar-color);

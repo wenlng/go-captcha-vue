@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="`go-captcha gc-wrapper ${localConfig.showTheme && 'gc-theme'}`"
+    :class="`go-captcha gc-wrapper gc-slide ${localConfig.showTheme && 'gc-theme'}`"
     :style="wrapperStyles"
     v-show="hasDisplayWrapperState"
     ref="rootRef"
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div
-      class="gc-body"
+      :class="`gc-body ${innerTips.type == 'SUCCESS' && innerTips.show ? 'shine-effect-tr-bl' : ''}`"
       ref="containerRef"
       :style="imageStyles"
     >
@@ -34,6 +34,11 @@
         :style="imageStyles"
         :src="localData.image"
         alt=""
+      />
+      <Tips
+        v-model:show="innerTips.show"
+        :content="innerTips.content"
+        :type="innerTips.type"
       />
       <div
         class="gc-tile"
@@ -49,7 +54,10 @@
     </div>
     <div class="gc-footer">
       <div class="gc-drag-slide-bar" ref="dragBarRef">
-        <div class="gc-drag-line" />
+
+        <div class="gc-drag-line">
+          <div class="gc-drag-text" :style="dragTextStyles">{{ localConfig.title }}</div>
+        </div>
         <div
           class="gc-drag-block"
           :class="!hasDisplayImageState && 'disabled'"
@@ -82,6 +90,13 @@ import {defaultSlideData, SlideData} from "./meta/data";
 import {SlideEvent} from "./meta/event";
 import {SlideExpose} from "./meta/expose";
 import {useHandler} from "./hooks/handler";
+import Tips from "../base/Tips.vue";
+
+const innerTips = reactive({
+  show: false,
+  content: '',
+  type: 'SUCCESS',
+})
 
 // @ts-ignore
 const props = withDefaults(
@@ -182,6 +197,16 @@ const hasDisplayWrapperState = computed(() => {
   return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
 })
 
+// 动态裁剪滑动槽中的文本：随着把柄移动，隐藏其左侧的文字
+const dragTextStyles = computed(() => {
+  const left = Math.max(0, handler.state.dragLeft || 0)
+  const px = left + 'px'
+  return {
+    clipPath: `inset(0 0 0 ${px})`,
+    WebkitClipPath: `inset(0 0 0 ${px})`,
+  } as any
+})
+
 const fn = (event: any) => event.preventDefault()
 onMounted(async () => {
   await nextTick();
@@ -197,6 +222,11 @@ defineExpose<SlideExpose>({
   clear: handler.clearData,
   refresh: handler.refresh,
   close: handler.close,
+  setTips: (show: boolean, content: string, type: string) => {
+    innerTips.show = show
+    innerTips.content = content
+    innerTips.type = type
+  }
 });
 </script>
 
@@ -212,6 +242,60 @@ defineExpose<SlideExpose>({
       cursor: pointer;
       width: 100%;
       height: 100%;
+    }
+  }
+}
+
+/* Slide-only overrides to implement track + square arrow handle */
+.go-captcha.gc-slide {
+  .gc-drag-slide-bar {
+    height: 40px;
+  }
+
+  .gc-drag-line {
+    height: 40px;
+    margin-top: -20px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb; // neutral-200
+    border-radius: 6px;
+    position: relative;
+    pointer-events: none; // allow dragging even when starting on text
+   }
+
+  .gc-drag-text {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af; // neutral-400 text
+    font-size: 13px;
+    pointer-events: none;
+  }
+
+  .gc-drag-block {
+    width: 44px;
+    height: 36px;
+    margin-top: -18px;
+    background: #f3f4f6; // neutral-100
+    border: 1px solid #d1d5db; // neutral-300
+    border-radius: 4px;
+    color: #6b7280; // neutral-500 icon color
+    fill: #6b7280;
+    box-shadow: none;
+
+    &.disabled {
+      background: #eef2f7;
+      border-color: #e5e7eb;
+    }
+  }
+
+  .gc-drag-block-inline {
+    svg {
+      width: 16px;
+      height: 16px;
+      color: #6b7280;
+      fill: #6b7280;
     }
   }
 }
