@@ -150,14 +150,6 @@ const imageStyles = computed(() => {
   }
 })
 
-const hasDisplayImageState = computed(() => {
-  return localData.image && localData.image.length > 0
-})
-
-const hasDisplayThumbImageState = computed(() => {
-  return localData.thumb && localData.thumb.length > 0
-})
-
 const hasDisplayWrapperState = computed(() => {
   return (localConfig.width || 0) > 0 || (localConfig.height || 0) > 0
 })
