@@ -7,7 +7,7 @@
     <div class="gc-header">
       <span>{{ localConfig.title }}</span>
       <img
-        v-show="hasDisplayImageState"
+        v-if="localData.thumb"
         :style="thumbStyles"
         :src="localData.thumb"
         alt=""
@@ -18,8 +18,8 @@
         <loading-icon />
       </div>
       <img
+        v-if="localData.image"
         :style="imageStyles"
-        v-show="hasDisplayImageState"
         class="gc-picture"
         :src="localData.image"
         @click="handler.clickEvent"
@@ -174,7 +174,7 @@ defineExpose<ClickExpose>({
       z-index: 2;
       width: 22px;
       height: 22px;
-      color: var(--go-captcha-theme-dot-color-color);
+      color: var(--go-captcha-theme-dot-color);
       background: var(--go-captcha-theme-dot-bg-color);
       border: 3px solid #f7f9fb;
       border-color: var(--go-captcha-theme-dot-border-color);
