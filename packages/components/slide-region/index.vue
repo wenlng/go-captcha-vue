@@ -17,7 +17,7 @@
         <loading-icon />
       </div>
       <img
-        v-show="hasDisplayImageState"
+        v-if="localData.image"
         class="gc-picture"
         :style="imageStyles"
         :src="localData.image"
@@ -28,10 +28,10 @@
         ref="tileRef"
         :style="thumbStyles"
         @mousedown="handler.dragEvent"
-        @touchstart="handler.dragEvent"
+        @touchstart.prevent="handler.dragEvent"
       >
         <img
-          v-show="hasDisplayThumbImageState"
+          v-if="localData.thumb"
           :src="localData.thumb"
           alt=""
         />
@@ -148,14 +148,6 @@ const imageStyles = computed(() => {
     width: localConfig.width + "px",
     height: localConfig.height + "px"
   }
-})
-
-const hasDisplayImageState = computed(() => {
-  return localData.image && localData.image.length > 0
-})
-
-const hasDisplayThumbImageState = computed(() => {
-  return localData.thumb && localData.thumb.length > 0
 })
 
 const hasDisplayWrapperState = computed(() => {
