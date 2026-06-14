@@ -33,13 +33,13 @@ export function useHandler(
     const blockWidth = dragBlockRef.value.offsetWidth
     const maxWidth = width - blockWidth
     const maxAngle = 360
-    const p = (maxAngle - data.angle) / maxWidth
+    const p = (maxAngle - (data.angle ?? 0)) / maxWidth
 
     let angle = 0
     let isMoving = false
     let tmpLeaveDragEvent: Event|any = null
     let startX = 0;
-    let currentAngle = 0
+    let currentAngle: any = 0
     if (touch) {
       startX = touch.pageX - offsetLeft
     } else {
@@ -67,7 +67,7 @@ export function useHandler(
 
       if (left <= 0) {
         state.dragLeft = 0
-        state.thumbAngle = currentAngle = data.angle
+        state.thumbAngle = currentAngle = data.angle ?? 0
         return
       }
 
@@ -180,7 +180,7 @@ export function useHandler(
 
   const resetData = () => {
     state.dragLeft = 0
-    state.thumbAngle = data.angle
+    state.thumbAngle = data.angle ?? 0
   }
 
   const clearData = () => {
