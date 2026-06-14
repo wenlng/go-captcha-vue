@@ -34,7 +34,7 @@
           :style="imageStyles"
         >
           <img
-            v-show="hasDisplayImageState"
+            v-if="localData.image"
             :src="localData.image"
             alt=""
           />
@@ -44,7 +44,7 @@
         <div class="gc-thumb gc-rotate-thumb">
           <div class="gc-rotate-thumb-block" :style="thumbStyles">
             <img
-              v-show="hasDisplayThumbImageState"
+              v-if="localData.thumb"
               :src="localData.thumb"
               alt=""
             />
@@ -64,7 +64,7 @@
         >
           <div
             class="gc-drag-block-inline"
-            @touchstart="handler.dragEvent"
+            @touchstart.prevent="handler.dragEvent"
           >
             <arrows-icon />
           </div>

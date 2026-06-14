@@ -7,7 +7,7 @@
     <div class="gc-header">
       <span>{{ localConfig.title }}</span>
       <img
-        v-show="hasDisplayImageState"
+        v-if="localData.thumb"
         :style="thumbStyles"
         :src="localData.thumb"
         alt=""
@@ -18,8 +18,8 @@
         <loading-icon />
       </div>
       <img
+        v-if="localData.image"
         :style="imageStyles"
-        v-show="hasDisplayImageState"
         class="gc-picture"
         :src="localData.image"
         @click="handler.clickEvent"

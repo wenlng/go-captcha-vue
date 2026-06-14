@@ -29,8 +29,8 @@
         <loading-icon />
       </div>
       <img
+        v-if="localData.image"
         class="gc-picture"
-        v-show="hasDisplayImageState"
         :style="imageStyles"
         :src="localData.image"
         alt=""
@@ -41,7 +41,7 @@
         :style="thumbStyles"
       >
         <img
-          v-show="hasDisplayThumbImageState"
+          v-if="localData.thumb"
           :src="localData.thumb"
           alt=""
         />
@@ -59,7 +59,7 @@
         >
           <div
             class="gc-drag-block-inline"
-            @touchstart="handler.dragEvent"
+            @touchstart.prevent="handler.dragEvent"
           >
             <arrows-icon />
           </div>
